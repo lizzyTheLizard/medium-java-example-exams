@@ -3,14 +3,18 @@ services:
   backend:
     build:
       context: ../../../
+      dockerfile: ./src/main/docker/Dockerfile.java
     depends_on:
       - postgres
   frontend:
     build:
-      context: ../../main/angular/
+      context: ../../../
+      dockerfile: ./src/main/docker/Dockerfile.angular
 
   postgres:
     image: postgres
+    environment:
+      PGDATA: /var/lib/postgresql/data2
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   keycloak:

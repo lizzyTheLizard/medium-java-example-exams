@@ -1,0 +1,5 @@
+.idea
+target
+*.iml
+src/main/angular/node_modules
+src/main/angular/dist

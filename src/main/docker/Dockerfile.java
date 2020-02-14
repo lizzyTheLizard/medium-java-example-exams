@@ -2,7 +2,10 @@ FROM maven AS build
 WORKDIR /build
 COPY pom.xml .
 RUN mvn dependency:go-offline
-COPY src /build/src/
+COPY src/main/java /build/src/main/java
+COPY src/main/resources /build/src/main/resources
+COPY src/test/java /build/src/test/java
+COPY src/test/resources /build/src/test/resources
 RUN mvn package
 
 FROM openjdk
