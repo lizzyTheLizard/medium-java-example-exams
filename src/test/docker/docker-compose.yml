@@ -1,0 +1,41 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ../../../
+    depends_on:
+      - postgres
+  frontend:
+    build:
+      context: ../../main/angular/
+
+  postgres:
+    image: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  keycloak:
+    image: jboss/keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: postgres
+      DB_USER: postgres
+      DB_SCHEMA: public
+      DB_PASSWORD: postgres
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: secret
+    volumes:
+      - ./keycloak.json:/tmp/keycloak.json
+    depends_on:
+      - postgres
+    command: "-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/keycloak.json"
+  nginx:
+    image: nginx
+    volumes:
+     - ./nginx.conf:/etc/nginx/conf.d/site.conf
+    ports:
+     - "8080:8080"
+    depends_on:
+      - backend
+      - keycloak
+      - frontend
