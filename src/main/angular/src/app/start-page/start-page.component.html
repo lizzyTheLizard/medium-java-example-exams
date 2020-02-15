@@ -1,0 +1,59 @@
+<div class="grid-container">
+  <h1>Welcome to Exams</h1>
+  <mat-grid-list cols="2" rowHeight="200px">
+    <mat-grid-tile [colspan]="colspan$ | async" rowspan="1">
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>
+            Enter a Exam Key
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <input matInput [(ngModel)]="key" [ngClass]="inputClass$ | async" placeholder="123e4567-e89b-12d3-a456-556642440000">
+          <button mat-raised-button color="primary" [ngClass]="inputClass$ | async"  [disabled]="key.length != 36" type="button" (click)="navigateToKey()">Start</button>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="colspan$ | async" rowspan="1">
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>
+            Create a new exam
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <input #file hidden="true" type="file" onclick="this.value=null" (change)="fileUpload($event.target.files)" accept=".xml"/>
+          <button mat-raised-button color="primary" [ngClass]="inputClass$ | async" (click)="file.click()">Upload Exam Description</button>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2" rowspan="3">
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>
+            My running exams
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="exams$ | async">
+           <ng-container matColumnDef="name">
+              <td mat-cell *matCellDef="let row">{{row.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="check">
+              <td mat-cell class="action" *matCellDef="let row">
+                <button mat-raised-button class="fullwidth" color="primary" type="button" (click)="check(row.id)">Check</button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="finish">
+              <td mat-cell class="action" *matCellDef="let row">
+                <button mat-raised-button class="fullwidth" color="warn" type="button" (click)="finish(row.id)">Finish</button>
+              </td>
+            </ng-container>
+            <tr mat-row *matRowDef="let row; columns: ['name', 'check', 'finish'];"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+ 
+  </mat-grid-list>
+</div>

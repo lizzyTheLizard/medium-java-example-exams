@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.security.Principal;
 
 class ExamXmlReaderTest {
+    //TODO replace with simple exam
     final static String TEST = "" +
             "<?xml version=\"1.0\" ?>" +
             "<exam maxAttempts=\"1\">" +

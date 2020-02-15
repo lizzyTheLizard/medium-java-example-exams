@@ -1,0 +1,54 @@
+.grid-container {
+  margin: 20px;
+}
+
+mat-card-header {
+  align-items: center;
+  justify-content: center;
+}
+
+mat-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+
+mat-card-content {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+input {
+  height: 50px;
+}
+
+input.fixedWidth {
+  width: 400px;
+}
+
+td.action {
+  width: 50px;
+}
+
+.fullWidth {
+  width: 100%;
+  box-sizing: border-box;
+  margin-left: 0px;
+  margin-top: 10px;
+}
+
+button {
+  height: 50px;
+  margin-left: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+table {
+  width: 100%;
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<exam maxAttempts="1">
+   Explain
+   <question correctSolution="0">
+       Question 1
+       <option>Answer 1</option>
+   </question>
+   <question correctSolution="1">
+       Question 2
+       <option>Answer 1</option>
+       <option>Answer 2</option>
+   </question>
+</exam>
