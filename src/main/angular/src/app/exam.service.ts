@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
+import { ProgressSpinnerService } from './progress-spinner/progress-spinner.service';
 
 export interface Exam {
   name: string;
@@ -12,24 +13,30 @@ export interface Exam {
 })
 export class ExamService {
 
-  constructor() { }
+  constructor(private readonly progressSpinnerService: ProgressSpinnerService) { }
 
   createExams(files: File[]): Observable<any> {
     // TODO
-    return of().pipe(delay(1000));
+    this.progressSpinnerService.setSpinnerStatus(true);
+    return of()
+    .pipe(delay(1000), tap(() => this.progressSpinnerService.setSpinnerStatus(false)));
   }
 
   getExams(): Observable<Exam[]> {
     // TODO
+    this.progressSpinnerService.setSpinnerStatus(true);
     return of([
         {name: 'Test Exam', id: '23-456'},
         {name: 'Test Exam 2', id: '23-456'} ,
         {name: 'Test Exam 2', id: '23-456'}
-    ]).pipe(delay(1000));
+    ])
+    .pipe(delay(1000), tap(() => this.progressSpinnerService.setSpinnerStatus(false)));
   }
 
   isMine(id: string): Observable<boolean> {
     // TODO
-    return of(false).pipe(delay(1000));
+    this.progressSpinnerService.setSpinnerStatus(true);
+    return of(false)
+    .pipe(delay(1000), tap(() => this.progressSpinnerService.setSpinnerStatus(false)));
   }
 }
