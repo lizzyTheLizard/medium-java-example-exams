@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Overlay, OverlayRef, OverlayConfig } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ProgressSpinnerService } from './progress-spinner.service';
@@ -8,9 +8,8 @@ import { ProgressSpinnerService } from './progress-spinner.service';
   templateUrl: './progress-spinner.component.html',
   styleUrls: ['./progress-spinner.component.scss']
 })
-export class ProgressSpinnerComponent implements OnInit, DoCheck {
+export class ProgressSpinnerComponent implements OnInit {
   private overlayRef: OverlayRef;
-  private status: boolean;
   private progressSpinnerOverlayConfig: OverlayConfig;
 
   @ViewChild('progressSpinnerRef')
@@ -26,17 +25,31 @@ export class ProgressSpinnerComponent implements OnInit, DoCheck {
             .centerHorizontally()
             .centerVertically()
     };
-    this.progressSpinnerService.getSpinnerStatus().subscribe(status => this.status = status);
+    this.progressSpinnerService.getSpinnerStatus().subscribe(status => this.statusUpdate(status));
   }
 
-  ngDoCheck(){
-    if (this.status && !this.overlayRef) {
-      this.overlayRef = this.overlay.create(this.progressSpinnerOverlayConfig);
-      const templatePortal = new TemplatePortal(this.progressSpinnerRef, this.vcRef);
-      this.overlayRef.attach(templatePortal);
-    } else if (!this.status && this.overlayRef) {
-      this.overlayRef.dispose();
-      this.overlayRef = null;
+  private statusUpdate(status: boolean): void {
+    if (status) {
+      this.attach();
+    } else {
+      this.detatch();
     }
+  }
+
+  private attach(): void {
+    if (this.overlayRef) {
+      return;
+    }
+    this.overlayRef = this.overlay.create(this.progressSpinnerOverlayConfig);
+    const templatePortal = new TemplatePortal(this.progressSpinnerRef, this.vcRef);
+    this.overlayRef.attach(templatePortal);
+  }
+
+  private detatch() {
+    if (!this.overlayRef) {
+      return;
+    }
+    this.overlayRef.dispose();
+    this.overlayRef = null;
   }
 }

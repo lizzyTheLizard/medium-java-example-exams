@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { ExamPageComponent } from './exam-page.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ExamPageComponent', () => {
   let component: ExamPageComponent;
@@ -24,6 +25,7 @@ describe('ExamPageComponent', () => {
         MatGridListModule,
         MatIconModule,
         MatMenuModule,
+        RouterTestingModule
       ]
     }).compileComponents();
   }));
