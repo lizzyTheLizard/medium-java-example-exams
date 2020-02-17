@@ -1,1 +1,33 @@
 <p>Exam page works</p>
+
+
+
+<div class="grid-container">
+    <mat-grid-list cols="1">
+
+      <mat-grid-tile colspan="1" rowspan="1"  *ngFor="let question of (exam$ | async).questions; index as i">
+        <mat-card class="question">
+          <mat-card-header>
+            <mat-card-title>
+              Question {{i}}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            {{question.text}}
+            <mat-selection-list id="{{'answer_' + i}}">
+              <mat-list-option *ngFor="let answer of question.answers; index as j" value="{{j}}"> {{answer}} </mat-list-item>
+            </mat-selection-list>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-card>
+        <mat-card-header>
+        </mat-card-header>
+        <mat-card-content>
+          <button mat-raised-button color="primary" [disabled]="answersMissing()" (click)="test">Upload Exam Description</button>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  
