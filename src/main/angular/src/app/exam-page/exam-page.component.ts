@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Exam, ExamService, Question } from '../exam.service';
+import { Exam, ExamService } from '../exam.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map, flatMap, tap } from 'rxjs/operators';
+import { map, flatMap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

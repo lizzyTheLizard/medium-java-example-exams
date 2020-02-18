@@ -1,1 +1,29 @@
-<p>Admin page works</p>
+<div>
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>
+        Successfull Participants
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content *ngIf="participants?.length > 0; else elseBlock">
+      <table mat-table [dataSource]="participants">
+        <ng-container matColumnDef="name">
+          <td mat-cell *matCellDef="let row">{{row.name}}</td>
+        </ng-container>
+        <tr mat-row *matRowDef="let row; columns: ['name'];"></tr>
+      </table>
+    </mat-card-content>
+    <ng-template #elseBlock>
+      <mat-card-content class="empty">
+        No participants so far...
+      </mat-card-content>
+    </ng-template>
+  </mat-card>
+  <mat-card>
+    <mat-card-content class="buttons">
+      <button mat-raised-button color="primary" (click)="refresh()">Refresh</button>
+      <button mat-raised-button color="warn" (click)="close()">Close</button>
+    </mat-card-content>
+  </mat-card>
+</div>
+        

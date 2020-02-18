@@ -12,8 +12,8 @@ export class ProgressSpinnerService {
 
   constructor() { }
 
-  enable(): void {
-    this.levels++;
+  enable(logInfo: string): void {
+    this.levels = this.levels + 1;
     if (this.switchOfTimerRef) {
       clearTimeout(this.switchOfTimerRef);
       this.switchOfTimerRef = null;
@@ -22,13 +22,13 @@ export class ProgressSpinnerService {
     }
   }
 
-  disable(): void {
+  disable(logInfo: string): void {
     if (this.levels === 0) {
-      console.error('Reached level below zero, set it to zero');
+      console.error('Reached level below zero, set it to zero', logInfo);
       return;
     }
 
-    this.levels--;
+    this.levels = this.levels - 1;
     if (this.levels === 0 && this.subject.value) {
       this.switchOfTimerRef = setTimeout(() => {
         this.subject.next(false);

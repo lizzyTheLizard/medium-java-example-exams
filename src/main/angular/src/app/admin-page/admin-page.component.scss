@@ -1,0 +1,24 @@
+mat-card-header {
+  align-items: center;
+  justify-content: center;
+}
+
+mat-card {
+  margin: 20px;
+}
+
+mat-card-content.buttons {
+  text-align: center;
+}
+
+mat-card-content.empty {
+  text-align: center;
+}
+
+button {
+  width: 200px;
+}
+
+table {
+  width: 100%;
+}

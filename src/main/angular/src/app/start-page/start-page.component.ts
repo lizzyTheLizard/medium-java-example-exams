@@ -33,11 +33,6 @@ export class StartPageComponent {
     this.router.navigate(['/admin/', id]);
   }
 
-  finish(id: string) {
-    console.log('finish', id);
-    // TODO
-  }
-
   constructor(private readonly router: Router,
               private readonly examService: ExamService,
               private breakpointObserver: BreakpointObserver) {

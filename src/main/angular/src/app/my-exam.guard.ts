@@ -3,13 +3,14 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ExamService } from './exam.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyExamGuard implements CanActivate {
 
-  constructor(private router: Router, private examService: ExamService)  { }
+  constructor(private router: Router, private examService: ExamService, private snackBar: MatSnackBar)  { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -19,7 +20,13 @@ export class MyExamGuard implements CanActivate {
         this.router.navigate(['/home']);
         return false;
     }
-    return this.examService.isMine(id).pipe(tap(s => {if (!s) {this.router.navigate(['/home']); }}));
+    return this.examService.isMine(id).pipe(tap(s => {
+      if (!s) {
+        this.router.navigate(['/home']);
+        this.snackBar.open('You cannot access this page', 'ok', {duration: 5000});
+
+      }
+    }));
   }
 
 }

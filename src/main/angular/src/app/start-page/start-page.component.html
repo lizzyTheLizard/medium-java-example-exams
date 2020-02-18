@@ -44,12 +44,7 @@
                 <button mat-raised-button class="fullwidth" color="primary" type="button" (click)="check(row.id)">Check</button>
               </td>
             </ng-container>
-            <ng-container matColumnDef="finish">
-              <td mat-cell class="action" *matCellDef="let row">
-                <button mat-raised-button class="fullwidth" color="warn" type="button" (click)="finish(row.id)">Finish</button>
-              </td>
-            </ng-container>
-            <tr mat-row *matRowDef="let row; columns: ['name', 'check', 'finish'];"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['name', 'check'];"></tr>
           </table>
         </mat-card-content>
       </mat-card>
