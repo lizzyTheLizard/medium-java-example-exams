@@ -26,6 +26,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.co
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

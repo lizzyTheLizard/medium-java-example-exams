@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Exam, ExamService, Question } from '../exam.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map, flatMap, tap } from 'rxjs/operators';
-import { ProgressSpinnerService } from '../progress-spinner/progress-spinner.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-exam-page',
@@ -17,7 +17,7 @@ export class ExamPageComponent implements OnInit {
   constructor(private readonly router: Router,
               private readonly route: ActivatedRoute,
               private readonly examService: ExamService,
-              private readonly progressSpinnerService: ProgressSpinnerService) { }
+              private readonly snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.params.pipe(
@@ -31,16 +31,16 @@ export class ExamPageComponent implements OnInit {
 
   submit(): void {
     const answerArray = [];
-    this.answers.forEach((v, k) => answerArray[v] = k);
+    this.answers.forEach((v, k) => answerArray[k] = v);
     this.examService.trySolve(this.exam.id, answerArray).subscribe(result => this.checkResult(result));
   }
 
   private checkResult(result: boolean): void {
     if (result) {
-      // TODO Show message
+      this.snackBar.open('You sucessfully took the exam', 'ok', {duration: 5000});
       this.router.navigate(['/home/']);
     } else {
-      // TODO Show message
+      this.snackBar.open('At least one answer is not correct', 'ok', {duration: 5000});
     }
   }
 

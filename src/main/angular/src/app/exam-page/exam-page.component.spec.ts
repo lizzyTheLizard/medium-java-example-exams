@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { ExamPageComponent } from './exam-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('ExamPageComponent', () => {
   let component: ExamPageComponent;
@@ -25,6 +26,7 @@ describe('ExamPageComponent', () => {
         MatGridListModule,
         MatIconModule,
         MatMenuModule,
+        MatSnackBarModule,
         RouterTestingModule
       ]
     }).compileComponents();

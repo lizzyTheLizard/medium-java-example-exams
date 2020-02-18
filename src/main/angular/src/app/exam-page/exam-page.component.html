@@ -9,7 +9,7 @@
       <p style="font-size: larger;">{{question.text}}</p>
       <mat-list role="list">
         <mat-list-item *ngFor="let answer of question.answers; index as j">
-          <mat-radio-button value="j" (change)="setAnswer(i, $event.value)">
+          <mat-radio-button [value]="j" (change)="setAnswer(i, $event.value)">
             {{answer}}
           </mat-radio-button>
         </mat-list-item>

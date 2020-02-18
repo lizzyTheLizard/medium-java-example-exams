@@ -41,7 +41,7 @@ export class ExamService {
   trySolve(id: string, answers: number[]): Observable<boolean> {
     // TODO
     this.progressSpinnerService.enable();
-    return of(false)
+    return of(answers[0] === 0)
     .pipe(delay(1000), tap(() => this.progressSpinnerService.disable()));
   }
 

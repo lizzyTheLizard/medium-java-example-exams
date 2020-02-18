@@ -15,14 +15,10 @@ export class ProgressSpinnerService {
   enable(): void {
     this.levels++;
     if (this.switchOfTimerRef) {
-      console.log('Cancle switch off timer');
       clearTimeout(this.switchOfTimerRef);
       this.switchOfTimerRef = null;
     } else if (!this.subject.value) {
-      console.log('Enable spinner');
       this.subject.next(true);
-    } else {
-      console.log('Set Spinner level', this.levels);
     }
   }
 
@@ -34,14 +30,10 @@ export class ProgressSpinnerService {
 
     this.levels--;
     if (this.levels === 0 && this.subject.value) {
-      console.log('Disable spinner in 100 ms');
       this.switchOfTimerRef = setTimeout(() => {
         this.subject.next(false);
         this.switchOfTimerRef = null;
-        console.log('Disable spinner');
       }, 100);
-    } else {
-      console.log('Set Spinner level', this.levels);
     }
   }
 
