@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, DoBootstrap, ApplicationRef } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +27,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
+const keycloakService = new KeycloakService();
 
 @NgModule({
   declarations: [
@@ -60,8 +62,33 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSortModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    KeycloakAngularModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ {
+    provide: KeycloakService,
+    useValue: keycloakService
+  }],
 })
-export class AppModule { }
+export class AppModule implements DoBootstrap {
+  ngDoBootstrap(appRef: ApplicationRef) {
+    keycloakService
+      .init({
+        config: {
+          url: 'http://localhost:8080/auth/',
+          realm: 'exam',
+          clientId: 'ui'
+        },
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: false
+        },
+        enableBearerInterceptor: true,
+        bearerExcludedUrls: ['/assets', '/clients/public']
+      })
+      .then(() => {
+        console.log('[ngDoBootstrap] bootstrap app');
+        appRef.bootstrap(AppComponent);
+      })
+      .catch(error => console.error('[ngDoBootstrap] init Keycloak failed', error));
+  }
+}

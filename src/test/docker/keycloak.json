@@ -1,6 +1,7 @@
-[{
+{
   "id": "exams",
-  "realm": "exams",
+  "realm": "exam",
+  "enabled": true,
   "registrationAllowed": true,
   "clients": [
     {
@@ -8,7 +9,7 @@
       "clientId": "ui",
       "enabled": true,
       "redirectUris": [
-        "http://localhost:8080/*"
+        "http://localhost:4200/*"
       ],
       "webOrigins": [
         "+"
@@ -17,8 +18,8 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
-      "publicClient": false,
+      "publicClient": true,
       "protocol": "openid-connect"
     }
   ]  
-}]
+}

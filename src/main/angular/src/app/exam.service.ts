@@ -32,7 +32,7 @@ export class ExamService {
       {name: 'Hans', id: 'dfd'},
       {name: 'Peter', id: 'fdf'}
     ])
-    .pipe(delay(1000), share(), tap(res => console.log(res)), tap(() => this.progressSpinnerService.disable('getParticipantsForExam')));
+    .pipe(delay(1000), share(), tap(() => this.progressSpinnerService.disable('getParticipantsForExam')));
   }
 
   constructor(private readonly progressSpinnerService: ProgressSpinnerService) { }

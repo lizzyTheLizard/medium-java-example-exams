@@ -28,11 +28,11 @@ services:
       DB_PASSWORD: postgres
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: secret
+      KEYCLOAK_IMPORT: /tmp/exam-realm.json
     volumes:
-      - ./keycloak.json:/tmp/keycloak.json
+      - ./keycloak.json:/tmp/exam-realm.json 
     depends_on:
       - postgres
-    command: "-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/keycloak.json"
   nginx:
     image: nginx
     volumes:
