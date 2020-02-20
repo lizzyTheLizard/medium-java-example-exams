@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { delay, tap, catchError, map, share } from 'rxjs/operators';
-import { ProgressSpinnerService } from './progress-spinner/progress-spinner.service';
+import { Observable, of } from 'rxjs';
+import { delay, tap, share } from 'rxjs/operators';
+import { ProgressSpinnerService } from '../../components/progress-spinner/progress-spinner.service';
 
 export interface Question {
   text: string;

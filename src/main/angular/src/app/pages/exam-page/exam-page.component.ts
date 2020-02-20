@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Exam, ExamService } from '../exam.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map, flatMap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Exam, ExamService } from '../../services/exam/exam.service';
 
 @Component({
   selector: 'app-exam-page',

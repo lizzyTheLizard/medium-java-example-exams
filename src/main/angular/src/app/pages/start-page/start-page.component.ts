@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 
-import { ExamService, Exam } from '../exam.service';
+import { ExamService, Exam } from '../../services/exam/exam.service';
 
 @Component({
   selector: 'app-start-page',

@@ -20,8 +20,14 @@ The application can be started with the command
 ```
 You can then reach the application under http://localhost:8080/
 
-You can also start the UI, the backend and keycloak individually. Keycloak can be started using
+You can also start the UI, the backend and keycloak individually. Keycloak can be started using those commands
 ```
 docker run --rm -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=secret -e KEYCLOAK_IMPORT=/tmp/example-realm.json -v `pwd`/src/test/docker/keycloak.json:/tmp/example-realm.json jboss/keycloak -b 0.0.0.0 -Djboss.http.port=8080
+
+mvn spring-boot:run
+
+ng serve 
+
+npm start --prefix=src/main/angular/
 ```
 then the UI and the backend can be started normally using `ng serve` and `mvn spring-boot:run`.

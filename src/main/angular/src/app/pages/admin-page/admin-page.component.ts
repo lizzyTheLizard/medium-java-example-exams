@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ExamService, Exam, Participant } from '../exam.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map, flatMap } from 'rxjs/operators';
+import { ExamService, Exam, Participant } from '../../services/exam/exam.service';
 
 @Component({
   selector: 'app-admin-page',
