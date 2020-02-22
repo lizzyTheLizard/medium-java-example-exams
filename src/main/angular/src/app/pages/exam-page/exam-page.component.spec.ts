@@ -10,6 +10,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ExamPageComponent } from './exam-page.component';
+import { HttpClientModule } from '@angular/common/http';
+import { KeycloakAngularModule } from 'keycloak-angular';
 
 describe('ExamPageComponent', () => {
   let component: ExamPageComponent;
@@ -27,6 +29,8 @@ describe('ExamPageComponent', () => {
         MatIconModule,
         MatMenuModule,
         MatSnackBarModule,
+        HttpClientModule,
+        KeycloakAngularModule,
         RouterTestingModule
       ]
     }).compileComponents();

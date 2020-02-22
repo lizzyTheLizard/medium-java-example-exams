@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<exam maxAttempts="1">
+<exam maxAttempts="1" title="Test Exam">
    Explain
    <question correctSolution="0">
        Question 1

@@ -29,6 +29,7 @@ import { ExamPageComponent } from './pages/exam-page/exam-page.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { AppComponent } from './components/app/app.component';
 import { environment } from 'src/environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 const keycloakService = new KeycloakService();
 
@@ -63,7 +64,8 @@ const keycloakService = new KeycloakService();
     MatSortModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    HttpClientModule
   ],
   providers: [ {
     provide: KeycloakService,

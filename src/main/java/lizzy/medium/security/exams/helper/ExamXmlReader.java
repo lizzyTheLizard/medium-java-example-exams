@@ -1,5 +1,7 @@
-package izzy.medium.security.exams.app;
+package lizzy.medium.security.exams.helper;
 
+import lizzy.medium.security.exams.model.Exam;
+import lizzy.medium.security.exams.model.Question;
 import lombok.RequiredArgsConstructor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,12 +16,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+//TODO This is unsafe code, it contains unsafe XML-deserialization
+
 @RequiredArgsConstructor
-class ExamXmlReader {
+public class ExamXmlReader {
     private final Element root;
     private final Principal principal;
 
-    ExamXmlReader(InputStream in, Principal principal) throws Exception {
+    public ExamXmlReader(InputStream in, Principal principal) throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(in);
@@ -28,7 +32,7 @@ class ExamXmlReader {
         this.principal = principal;
     }
 
-    Exam read(){
+    public Exam read() {
         NodeList childNodes = root.getChildNodes();
         String text = IntStream.range(0, childNodes.getLength())
                 .mapToObj(childNodes::item)
@@ -38,7 +42,9 @@ class ExamXmlReader {
                 .orElse("")
                 .trim();
         int maxAttempts = Integer.parseInt(root.getAttribute("maxAttempts"));
+        String title = root.getAttribute("title");
         return Exam.builder()
+                .title(title)
                 .principal(principal)
                 .questions(readQuestions(root))
                 .text(text)

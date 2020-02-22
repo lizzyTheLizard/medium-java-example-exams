@@ -8,11 +8,13 @@
     <mat-card-content>
       <p style="font-size: larger;">{{question.text}}</p>
       <mat-list role="list">
-        <mat-list-item *ngFor="let answer of question.answers; index as j">
-          <mat-radio-button [value]="j" (change)="setAnswer(i, $event.value)">
-            {{answer}}
-          </mat-radio-button>
-        </mat-list-item>
+        <mat-radio-group>
+          <mat-list-item *ngFor="let answer of question.options; index as j">
+            <mat-radio-button [value]="j" (change)="setAnswer(i, $event.value)">
+              {{answer}}
+            </mat-radio-button>
+          </mat-list-item>
+        </mat-radio-group>
       </mat-list>
     </mat-card-content>
   </mat-card>
@@ -20,7 +22,7 @@
     <mat-card-header>
     </mat-card-header>
     <mat-card-content class="buttons">
-      <button mat-raised-button color="primary" [disabled]="answerMissing()" (click)="submit()">Submit</button>
+      <button mat-raised-button color="primary" [disabled]="buttonDisabled()" (click)="submit()">Submit ({{triesLeft}} tries left)</button>
     </mat-card-content>
   </mat-card>
 </div>

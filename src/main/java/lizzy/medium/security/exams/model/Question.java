@@ -1,4 +1,4 @@
-package izzy.medium.security.exams.app;
+package lizzy.medium.security.exams.model;
 
 import lombok.*;
 
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-class Question {
+public class Question {
     @NotNull
     @Getter
     @Id
@@ -42,5 +42,4 @@ class Question {
         this.correctOption = correctOption;
         this.text = text;
     }
-
 }

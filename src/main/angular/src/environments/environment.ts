@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  keycloakUrl: "http://localhost:8080/auth",
-  apiUrl: "http://localhost:8080/api/"
+  keycloakUrl: 'http://localhost:9080/auth',
+  uiUrl: 'http://localhost:4200',
+  apiUrl: 'http://localhost:8080/api/'
 };
 
 /*

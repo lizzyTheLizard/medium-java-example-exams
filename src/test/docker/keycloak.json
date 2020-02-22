@@ -9,7 +9,8 @@
       "clientId": "ui",
       "enabled": true,
       "redirectUris": [
-        "http://localhost:4200/*"
+        "http://localhost:4200/*",
+        "http://localhost:8080/*"
       ],
       "webOrigins": [
         "+"

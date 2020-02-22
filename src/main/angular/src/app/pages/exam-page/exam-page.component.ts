@@ -11,6 +11,7 @@ import { Exam, ExamService } from '../../services/exam/exam.service';
 })
 export class ExamPageComponent implements OnInit {
   exam: Exam;
+  triesLeft: number;
   answers: Map<number, number>;
 
   constructor(private readonly router: Router,
@@ -25,7 +26,10 @@ export class ExamPageComponent implements OnInit {
       .subscribe(exam => {
         this.exam = exam;
         this.answers = new Map();
-      });
+        this.examService.getTriesLeft(this.exam.id).subscribe(
+          triesLeft => this.triesLeft = triesLeft
+        );
+      }, e => this.router.navigate(['/home']));
   }
 
   submit(): void {
@@ -39,12 +43,20 @@ export class ExamPageComponent implements OnInit {
       this.snackBar.open('You sucessfully took the exam', 'ok', {duration: 5000});
       this.router.navigate(['/home/']);
     } else {
-      this.snackBar.open('At least one answer is not correct', 'ok', {duration: 5000});
+      this.examService.getTriesLeft(this.exam.id).subscribe(triesLeft => {
+        this.triesLeft = triesLeft;
+        if (this.triesLeft <= 0) {
+          this.snackBar.open('No more tries left, you have failed the exam', 'ok', {duration: 5000});
+          this.router.navigate(['/home/']);
+        } else {
+          this.snackBar.open('At least one answer is not correct', 'ok', {duration: 5000});
+        }
+      });
     }
   }
 
-  answerMissing(): boolean {
-    return !this.answers || this.answers.size < this.exam.questions.length;
+  buttonDisabled(): boolean {
+    return !this.answers || this.answers.size < this.exam.questions.length || this.triesLeft <= 0;
   }
 
   setAnswer(questionIndex: number, answerIndex: number): void {

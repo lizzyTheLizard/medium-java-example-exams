@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map, flatMap } from 'rxjs/operators';
-import { ExamService, Exam, Participant } from '../../services/exam/exam.service';
+import { ExamService, Exam, SuccessReturn } from '../../services/exam/exam.service';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-admin-page',
@@ -10,8 +12,9 @@ import { ExamService, Exam, Participant } from '../../services/exam/exam.service
   styleUrls: ['./admin-page.component.scss']
 })
 export class AdminPageComponent implements OnInit {
-  participants: Participant[];
-  exam: Exam;
+  participants: SuccessReturn[];
+  exam: Exam = null;
+  link = '';
 
   constructor(private readonly router: Router,
               private readonly route: ActivatedRoute,
@@ -24,13 +27,16 @@ export class AdminPageComponent implements OnInit {
         flatMap(id => this.examService.getExam(id)))
       .subscribe(exam => {
         this.exam = exam;
+        this.link = environment.uiUrl + this.router.createUrlTree(['/exam/', exam.id]).toString();
         this.refresh();
       });
   }
 
   close(): void {
-    this.snackBar.open('You`re exam has been closed', 'ok', {duration: 5000});
-    this.router.navigate(['/home/']);
+    this.examService.close(this.exam.id).subscribe(() => {
+      this.snackBar.open('You`re exam has been closed', 'ok', {duration: 5000});
+      this.router.navigate(['/home/']);
+    });
   }
 
   refresh(): void {

@@ -6,6 +6,7 @@ COPY src/main/java /build/src/main/java
 COPY src/main/resources /build/src/main/resources
 COPY src/test/java /build/src/test/java
 COPY src/test/resources /build/src/test/resources
+COPY src/test/exams /build/src/test/exams
 RUN mvn package
 
 FROM openjdk

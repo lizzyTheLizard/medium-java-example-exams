@@ -10,6 +10,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AdminPageComponent } from './admin-page.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { KeycloakAngularModule } from 'keycloak-angular';
 
 describe('AdminPageComponent', () => {
   let component: AdminPageComponent;
@@ -27,6 +29,8 @@ describe('AdminPageComponent', () => {
         MatIconModule,
         MatMenuModule,
         MatSnackBarModule,
+        HttpClientModule,
+        KeycloakAngularModule,
         RouterTestingModule
       ]
     }).compileComponents();

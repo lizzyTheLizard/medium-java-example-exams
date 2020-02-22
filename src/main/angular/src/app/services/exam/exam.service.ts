@@ -1,80 +1,104 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay, tap, share } from 'rxjs/operators';
+import { Observable, throwError, OperatorFunction, pipe } from 'rxjs';
+import { tap, map, catchError } from 'rxjs/operators';
 import { ProgressSpinnerService } from '../../components/progress-spinner/progress-spinner.service';
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
+import { KeycloakService } from 'keycloak-angular';
 
 export interface Question {
   text: string;
-  answers: string[];
+  options: string[];
 }
 
 export interface Exam {
-  name: string;
+  title: string;
   id: string;
   questions: Question[];
+  owner: string;
+}
+
+export interface SuccessReturn {
+  participant: Participant;
+  status: string;
 }
 
 export interface Participant {
-  name: string;
-  id: string;
+  firstName: string;
+  lastName: string;
+  userId: string;
 }
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExamService {
 
-  getParticipantsForExam(id: string): Observable<Participant[]> {
-    // TODO
-    this.progressSpinnerService.enable('getParticipantsForExam');
-    return of<Participant[]>([
-      {name: 'Hans', id: 'dfd'},
-      {name: 'Peter', id: 'fdf'}
-    ])
-    .pipe(delay(1000), share(), tap(() => this.progressSpinnerService.disable('getParticipantsForExam')));
-  }
+  constructor(private readonly progressSpinnerService: ProgressSpinnerService,
+              private readonly snackBar: MatSnackBar,
+              private readonly httpClient: HttpClient,
+              private readonly keycloakService: KeycloakService) { }
 
-  constructor(private readonly progressSpinnerService: ProgressSpinnerService) { }
-
-  createExams(files: File[]): Observable<any> {
-    // TODO
-    this.progressSpinnerService.enable('createExams');
-    return of()
-    .pipe(delay(1000), tap(() => this.progressSpinnerService.disable('createExams')));
-  }
-
-  getExam(id: string): Observable<Exam> {
-    // TODO
-    this.progressSpinnerService.enable('getExam');
-    return of(
-        {name: 'Test Exam', id: '23-456', questions: [{text: 'Question1', answers: ['anser1', 'answer2']}]}
-    )
-    .pipe(delay(1000), tap(() => this.progressSpinnerService.disable('getExam')));
-  }
-
-  trySolve(id: string, answers: number[]): Observable<boolean> {
-    // TODO
-    this.progressSpinnerService.enable('trySolve');
-    return of(answers[0] === 0)
-    .pipe(delay(1000), tap(() => this.progressSpinnerService.disable('trySolve')));
-  }
-
-  getExams(): Observable<Exam[]> {
-    // TODO
-    this.progressSpinnerService.enable('getExams');
-    return of([
-        {name: 'Test Exam', id: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', questions: []},
-        {name: 'Test Exam 2', id: '23-456', questions: []} ,
-        {name: 'Test Exam 2', id: '23-456', questions: []}
-    ])
-    .pipe(delay(1000), tap(() => this.progressSpinnerService.disable('getExams')));
+  getParticipantsForExam(id: string): Observable<SuccessReturn[]> {
+    this.progressSpinnerService.enable('get Participants');
+    return this.httpClient.get<SuccessReturn[]>(environment.apiUrl + 'exams/' + id + '/participants')
+      .pipe(this.errorHandler('get Participants'));
   }
 
   isMine(id: string): Observable<boolean> {
-    // TODO
-    this.progressSpinnerService.enable('isMine');
-    return of(id === 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-    .pipe(delay(1000), tap(() => this.progressSpinnerService.disable('isMine')));
+    return this.getExam(id)
+      .pipe(map(e => e.owner === this.keycloakService.getKeycloakInstance().subject));
+  }
+
+  getExam(id: string): Observable<Exam> {
+    this.progressSpinnerService.enable('get Exam');
+    return this.httpClient.get<Exam>(environment.apiUrl + 'exams/' + id)
+      .pipe(this.errorHandler('get Exam'));
+  }
+
+  close(id: string): Observable<any> {
+    return this.httpClient.delete<any>(environment.apiUrl + 'exams/' + id)
+      .pipe(this.errorHandler('delete Exam'));
+  }
+
+  getExams(): Observable<Exam[]> {
+    this.progressSpinnerService.enable('get Exams');
+    return this.httpClient.get<Exam>(environment.apiUrl + 'exams/')
+      .pipe(this.errorHandler('get Exams'));
+  }
+
+  getTriesLeft(id: string): Observable<number> {
+    this.progressSpinnerService.enable('get Tried Left');
+    return this.httpClient.get<number>(environment.apiUrl + 'exams/' + id + '/triesLeft')
+      .pipe(this.errorHandler('get Tried Left'));
+  }
+
+  createExams(files: File[]): Observable<Exam> {
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    this.progressSpinnerService.enable('create Exam');
+    return this.httpClient.post<Exam>(environment.apiUrl + 'exams/', formData)
+      .pipe(this.errorHandler('create Exam'));
+  }
+
+  trySolve(id: string, answers: number[]): Observable<boolean> {
+    return this.httpClient.post<Exam>(environment.apiUrl + 'exams/' + id + '/solution', answers)
+      .pipe(this.errorHandler('try solve'));
+  }
+
+  private errorHandler<T, R>(logInfo: string): OperatorFunction<T, R> {
+    return pipe(
+      tap(() =>  {
+        console.log('Successfully ' + logInfo);
+        this.progressSpinnerService.disable(logInfo);
+      }),
+      catchError<R, Observable<R>>(e => {
+        console.warn('Could not ' + logInfo, e);
+        this.progressSpinnerService.disable(logInfo);
+        this.snackBar.open('Could not ' + logInfo, 'OK');
+        return throwError(e);
+      }),
+    );
   }
 }

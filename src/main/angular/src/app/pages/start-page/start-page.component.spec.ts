@@ -9,6 +9,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { StartPageComponent } from './start-page.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpClientModule } from '@angular/common/http';
+import { KeycloakAngularModule } from 'keycloak-angular';
 
 describe('StartPageComponent', () => {
   let component: StartPageComponent;
@@ -25,6 +28,9 @@ describe('StartPageComponent', () => {
         MatGridListModule,
         MatIconModule,
         MatMenuModule,
+        MatSnackBarModule,
+        HttpClientModule,
+        KeycloakAngularModule,
         RouterTestingModule
       ]
     }).compileComponents();

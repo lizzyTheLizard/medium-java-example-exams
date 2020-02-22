@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://keycloak:8080/auth/realms/exam/protocol/openid-connect/certs"
+server:
+  servlet:
+    context-path: "/api"
+flyway:
+  url: jdbc:postgresql://postgres:5432/postgres
+  username: postgres
+  password: postgres

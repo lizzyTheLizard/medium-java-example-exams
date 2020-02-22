@@ -1,11 +1,14 @@
-package izzy.medium.security.exams.app;
+package lizzy.medium.security.exams.model;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -18,9 +21,10 @@ public class SolutionAttempt {
     @Id
     private UUID id;
 
-    @NotEmpty
+    @NotNull
     @Getter
-    private String user;
+    @Embedded
+    private Participant participant;
 
     @NotNull
     @ManyToOne
@@ -34,9 +38,9 @@ public class SolutionAttempt {
     private ZonedDateTime time;
 
     @Builder
-    private SolutionAttempt(String user, Exam exam, boolean success) {
+    private SolutionAttempt(Participant participant, Exam exam, boolean success) {
         this.id = UUID.randomUUID();
-        this.user = user;
+        this.participant = participant;
         this.exam = exam;
         this.success = success;
         this.time = ZonedDateTime.now();

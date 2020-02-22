@@ -5,6 +5,7 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 
 import { ExamService, Exam } from '../../services/exam/exam.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-start-page',
@@ -26,7 +27,13 @@ export class StartPageComponent {
   }
 
   fileUpload(files: File[]) {
-    this.examService.createExams(files);
+    this.examService.createExams(files).subscribe(
+      newExam => {
+        this.exams$ = this.examService.getExams();
+        this.snackBar.open('Create new exam', 'ok');
+        setTimeout(() => this.router.navigate(['/admin/', newExam.id]), 100);
+      }
+    );
   }
 
   check(id: string) {
@@ -35,6 +42,7 @@ export class StartPageComponent {
 
   constructor(private readonly router: Router,
               private readonly examService: ExamService,
+              private readonly snackBar: MatSnackBar,
               private breakpointObserver: BreakpointObserver) {
     this.exams$ = this.examService.getExams();
   }
