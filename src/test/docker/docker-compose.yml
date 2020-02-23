@@ -29,6 +29,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: secret
       KEYCLOAK_IMPORT: /tmp/exam-realm.json
+      PROXY_ADDRESS_FORWARDING: "true"
     volumes:
       - ./keycloak.json:/tmp/exam-realm.json 
     depends_on:
@@ -36,9 +37,13 @@ services:
   nginx:
     image: nginx
     volumes:
-     - ./nginx.conf:/etc/nginx/conf.d/site.conf
+     - ./nginx.conf:/etc/nginx/conf.d/default.conf
+     - ./nginx-selfsigned.crt:/etc/ssl/certs/nginx-selfsigned.crt
+     - ./nginx-selfsigned.key:/etc/ssl/private/nginx-selfsigned.key
+     - ./dhparam.pem:/etc/ssl/certs/dhparam.pem
     ports:
-     - "8080:8080"
+     - "80:80"
+     - "443:443"
     depends_on:
       - backend
       - keycloak
