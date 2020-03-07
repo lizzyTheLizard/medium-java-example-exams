@@ -15,6 +15,7 @@ services:
     image: postgres
     environment:
       PGDATA: /var/lib/postgresql/data2
+      POSTGRES_PASSWORD: postgres
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   keycloak:
@@ -29,6 +30,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: secret
       KEYCLOAK_IMPORT: /tmp/exam-realm.json
+      KEYCLOAK_LOGLEVEL: INFO
       PROXY_ADDRESS_FORWARDING: "true"
     volumes:
       - ./keycloak.json:/tmp/exam-realm.json 

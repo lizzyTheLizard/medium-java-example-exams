@@ -23,5 +23,20 @@
       "publicClient": true,
       "protocol": "openid-connect"
     }
-  ]  
+  ],  
+  "users": [
+    {
+      "username": "user",
+      "enabled": "true",
+      "firstName": "Test",
+      "lastName": "User",
+      "email": "test@user.com",
+      "credentials" : [
+        {
+          "type" : "password",
+          "value" : "test"
+	}
+      ]
+    }
+  ]
 }
