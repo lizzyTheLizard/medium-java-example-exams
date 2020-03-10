@@ -20,6 +20,12 @@ import java.util.Map;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class ITSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    static String generateToken(String username) {
+        JWTClaimsSet claimSet = new JWTClaimsSet.Builder().subject(username).build();
+        PlainJWT jwt = new PlainJWT(claimSet);
+        return jwt.serialize();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().authenticated();
@@ -39,11 +45,5 @@ class ITSecurityConfig extends WebSecurityConfigurerAdapter {
         } catch (ParseException e) {
             throw new JwtException("Cannot decode", e);
         }
-    }
-
-    static String generateToken(String username) {
-        JWTClaimsSet claimSet = new JWTClaimsSet.Builder().subject(username).build();
-        PlainJWT jwt = new PlainJWT(claimSet);
-        return jwt.serialize();
     }
 }

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-@Entity(name="SolutionAttempt")
+@Entity(name = "SolutionAttempt")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

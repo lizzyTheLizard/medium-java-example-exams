@@ -31,25 +31,6 @@ public class ExamXmlReader {
     private final ExamFactory examFactory;
     private final ExamRepository examRepository;
 
-    public Exam read(Principal principal, InputStream in) throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(in);
-        doc.getDocumentElement().normalize();
-        Element root = doc.getDocumentElement();
-        Exam result = examFactory.create()
-                .id(UUID.randomUUID())
-                .text(getText(root))
-                .title(getTitle(root))
-                .owner(principal.getName())
-                .maxAttempts(getMaxAttempt(root))
-                .closed(false)
-                .build();
-        examRepository.add(result);
-        readQuestions(root, result);
-        return result;
-    }
-
     private static String getText(Element root) {
         NodeList childNodes = root.getChildNodes();
         return IntStream.range(0, childNodes.getLength())
@@ -88,7 +69,7 @@ public class ExamXmlReader {
                 .build();
     }
 
-    private static int getCorrectOption(Node questionNode){
+    private static int getCorrectOption(Node questionNode) {
         return Integer.parseInt(questionNode.getAttributes()
                 .getNamedItem("correctSolution")
                 .getNodeValue());
@@ -114,5 +95,24 @@ public class ExamXmlReader {
                 .map(Node::getTextContent)
                 .map(String::trim)
                 .collect(Collectors.toList());
+    }
+
+    public Exam read(Principal principal, InputStream in) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(in);
+        doc.getDocumentElement().normalize();
+        Element root = doc.getDocumentElement();
+        Exam result = examFactory.create()
+                .id(UUID.randomUUID())
+                .text(getText(root))
+                .title(getTitle(root))
+                .owner(principal.getName())
+                .maxAttempts(getMaxAttempt(root))
+                .closed(false)
+                .build();
+        examRepository.add(result);
+        readQuestions(root, result);
+        return result;
     }
 }

@@ -32,7 +32,7 @@ class ExamsController {
     @Operation(summary = "Find all Exams", description = "Find all exams of the current user, including closed exams", operationId = "readAll")
     @ApiResponse(responseCode = "200", description = "Successful")
     @ApiResponse(responseCode = "401", description = "Not Authenticated", content = @Content())
-    @GetMapping(produces = { "application/json", "application/xml" })
+    @GetMapping(produces = {"application/json", "application/xml"})
     Collection<ExamDto> list(Principal principal) {
         return examRepository.findAllOwnedBy(principal.getName()).stream()
                 .map(ExamDto::of)
@@ -43,7 +43,7 @@ class ExamsController {
     @ApiResponse(responseCode = "200", description = "Successful")
     @ApiResponse(responseCode = "401", description = "Not Authenticated", content = @Content())
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
-    @GetMapping(value= "/{examId}", produces = { "application/json", "application/xml" })
+    @GetMapping(value = "/{examId}", produces = {"application/json", "application/xml"})
     ExamDto get(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId) {
         Exam exam = examRepository.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
@@ -75,7 +75,7 @@ class ExamsController {
     @ApiResponse(responseCode = "200", description = "Successful")
     @ApiResponse(responseCode = "400", description = "XML-File not valid", content = @Content())
     @ApiResponse(responseCode = "401", description = "Not Authenticated", content = @Content())
-    @PostMapping(produces = { "application/json", "application/xml" })
+    @PostMapping(produces = {"application/json", "application/xml"})
     ExamDto create(@Parameter(description = "An exam description file") @RequestParam("file") MultipartFile file, Principal principal) {
         try {
             Exam exam = examXmlReader.read(principal, file.getInputStream());
@@ -91,7 +91,7 @@ class ExamsController {
     @ApiResponse(responseCode = "401", description = "Not Authenticated", content = @Content())
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The selected option for each question in the exam")
-    @PostMapping(value= "/{examId}/solution", produces = { "application/json", "application/xml" })
+    @PostMapping(value = "/{examId}/solution", produces = {"application/json", "application/xml"})
     boolean trySolution(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId, @RequestBody List<Integer> answers, Principal principal) {
         Exam exam = examRepository.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
@@ -112,7 +112,7 @@ class ExamsController {
     @ApiResponse(responseCode = "200", description = "Successful")
     @ApiResponse(responseCode = "401", description = "Not Authenticated", content = @Content())
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
-    @GetMapping(value= "/{examId}/triesLeft", produces = { "application/json", "application/xml" })
+    @GetMapping(value = "/{examId}/triesLeft", produces = {"application/json", "application/xml"})
     int triesLeft(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId, Principal principal) {
         return examRepository.findById(examId)
                 .map(e -> e.getTriesLeft(principal))
@@ -124,7 +124,7 @@ class ExamsController {
     @ApiResponse(responseCode = "401", description = "Not Authenticated", content = @Content())
     @ApiResponse(responseCode = "403", description = "Not My Exam", content = @Content())
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
-    @GetMapping(value= "/{examId}/participants", produces = { "application/json", "application/xml" })
+    @GetMapping(value = "/{examId}/participants", produces = {"application/json", "application/xml"})
     List<ParticipantDto> participants(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId, Principal principal) {
         Exam exam = examRepository.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));

@@ -60,7 +60,7 @@ public class Exam {
 
         return orderByUser.keySet().stream()
                 .map(orderByUser::get)
-                .map(list -> Participant.of(list,maxAttempts))
+                .map(list -> Participant.of(list, maxAttempts))
                 .collect(Collectors.toList());
     }
 

@@ -11,7 +11,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name="Question")
+@Entity(name = "Question")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

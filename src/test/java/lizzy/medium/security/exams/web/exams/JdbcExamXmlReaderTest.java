@@ -1,7 +1,6 @@
 package lizzy.medium.security.exams.web.exams;
 
 import lizzy.medium.security.exams.domain.*;
-import lizzy.medium.security.exams.web.exams.ExamXmlReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ class JdbcExamXmlReaderTest {
     private QuestionRepository questionRepository;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         Exam.ExamBuilder builder = Exam.builder()
                 .examRepository(examRepository)
                 .solutionAttemptRepository(solutionAttemptRepository)
