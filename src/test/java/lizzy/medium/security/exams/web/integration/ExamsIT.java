@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -28,12 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
+@Transactional
 class ExamsIT {
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
     ExamRepository examRepository;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Autowired
     ExamFactory examFactory;
@@ -43,6 +49,7 @@ class ExamsIT {
 
     @BeforeEach
     void setup() {
+        entityManager.createNativeQuery("TRUNCATE TABLE Exam").executeUpdate();
         exam = examFactory.create()
                 .id(UUID.randomUUID())
                 .maxAttempts(2)
@@ -52,6 +59,7 @@ class ExamsIT {
                 .title("title")
                 .build();
         examRepository.add(exam);
+        entityManager.createNativeQuery("TRUNCATE TABLE Question").executeUpdate();
         question = Question.builder()
                 .correctOption(1)
                 .id(UUID.randomUUID())
@@ -62,7 +70,7 @@ class ExamsIT {
     }
 
     @Test
-    void test() throws Exception {
+    void getAllForUser() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .get("/exams")
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + generateToken("user"));
@@ -81,4 +89,46 @@ class ExamsIT {
                 .andExpect(jsonPath("$[0].questions[0].options.length()").value(question.getOptions().size()))
                 .andExpect(jsonPath("$[0].questions[0].options[0]").value(question.getOptions().get(0)));
     }
+
+    @Test
+    void getAllForUserEmpty() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/exams")
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + generateToken("user2"));
+
+        mockMvc.perform(request)
+                .andDo(System.out::println)
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void solve() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post("/exams/" + exam.getId() + "/solution")
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + generateToken("user2"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"answers\": [1], \"comment\": \"test\"}");
+        mockMvc.perform(request)
+                .andDo(System.out::println)
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").value(true));
+    }
+
+    @Test
+    void solveWrong() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post("/exams/" + exam.getId() + "/solution")
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + generateToken("user2"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"answers\": [2], \"comment\": \"test\"}");
+        mockMvc.perform(request)
+                .andDo(System.out::println)
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").value(false));
+    }
+
 }

@@ -22,7 +22,7 @@ public class ExamAddTest extends ExamCloseTestBase {
     @Test
     void addSolutionAttempt() {
         Exam target = examBuilder.build();
-        target.addSolutionAttempt("first", "last", "user", true);
+        target.addSolutionAttempt("first", "last", "user", "test", true);
 
         ArgumentCaptor<SolutionAttempt> argumentCaptor = ArgumentCaptor.forClass(SolutionAttempt.class);
         Mockito.verify(solutionAttemptRepository).add(Mockito.eq(target), argumentCaptor.capture());
@@ -30,6 +30,7 @@ public class ExamAddTest extends ExamCloseTestBase {
         Assertions.assertNotNull(result.getId());
         Assertions.assertEquals("user", result.getUserId());
         Assertions.assertEquals("first", result.getFirstName());
+        Assertions.assertEquals("test", result.getComment());
         Assertions.assertEquals("last", result.getLastName());
     }
 }

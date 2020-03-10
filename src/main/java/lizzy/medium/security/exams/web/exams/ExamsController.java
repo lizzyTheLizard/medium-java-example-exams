@@ -92,7 +92,7 @@ class ExamsController {
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The selected option for each question in the exam")
     @PostMapping(value = "/{examId}/solution", produces = {"application/json", "application/xml"})
-    boolean trySolution(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId, @RequestBody List<Integer> answers, Principal principal) {
+    boolean trySolution(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId, @RequestBody SolutionDto solution, Principal principal) {
         Exam exam = examRepository.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         if (!exam.hasAttemptsLeft(principal)) {
@@ -102,9 +102,9 @@ class ExamsController {
             throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Wrong authentication");
         }
         Jwt jwt = ((JwtAuthenticationToken) principal).getToken();
-        boolean result = exam.checkSolution(answers);
+        boolean result = exam.checkSolution(solution.getAnswers());
         exam.addSolutionAttempt(jwt.getClaimAsString("given_name"), jwt.getClaimAsString("family_name"),
-                principal.getName(), result);
+                principal.getName(), solution.getComment(), result);
         return result;
     }
 

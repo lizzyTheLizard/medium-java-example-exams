@@ -17,7 +17,7 @@ public class JdbcExamRepository implements ExamRepository {
     JdbcExamRepository(JdbcExamSpringDataRepository jdbcExamSpringDataRepository,
                        SolutionAttemptRepository solutionAttemptRepository,
                        QuestionRepository questionRepository) {
-        //Cannot inject exam factory as this would be a circual dependency
+        //Cannot inject exam factory as this would be a circular dependency
         this.examFactory = new ExamFactory(solutionAttemptRepository, questionRepository, this);
         this.jdbcExamSpringDataRepository = jdbcExamSpringDataRepository;
     }

@@ -22,7 +22,6 @@ import java.util.UUID;
 @ImportAutoConfiguration({JdbcSolutionAttemptRepository.class})
 public class SolutionAttemptRepositoryTest {
     private final static String user = "test";
-    private final static String user2 = "test2";
     @Autowired
     JdbcSolutionAttemptRepository jdbcSolutionAttemptRepository;
     @Autowired
@@ -79,18 +78,26 @@ public class SolutionAttemptRepositoryTest {
 
     @Test
     void add() {
-        Assertions.assertEquals(0, jdbcSolutionAttemptRepository.countForExamAndUser(exam, user2));
+        solutionAttemptRepository.findAll().forEach(solutionAttemptRepository::delete);
 
         SolutionAttempt solutionAttempt = SolutionAttempt.builder()
                 .firstName("test")
                 .lastName("test")
+                .comment("testing")
                 .success(true)
-                .userId(user2)
+                .userId(user)
                 .id(UUID.randomUUID())
                 .build();
         jdbcSolutionAttemptRepository.add(exam, solutionAttempt);
 
-        Assertions.assertEquals(1, jdbcSolutionAttemptRepository.countForExamAndUser(exam, user2));
+        List<SolutionAttempt> result = jdbcSolutionAttemptRepository.findForExam(exam);
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(user, result.get(0).getUserId());
+        Assertions.assertEquals(solutionAttempt.getFirstName(), result.get(0).getFirstName());
+        Assertions.assertEquals(solutionAttempt.getLastName(), result.get(0).getLastName());
+        Assertions.assertEquals(solutionAttempt.getId(), result.get(0).getId());
+        Assertions.assertEquals(solutionAttempt.isSuccess(), result.get(0).isSuccess());
+        Assertions.assertEquals(solutionAttempt.getComment(), result.get(0).getComment());
     }
 
 }

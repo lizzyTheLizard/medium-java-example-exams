@@ -40,6 +40,9 @@ class JdbcSolutionAttempt {
     @Getter
     private boolean success;
 
+    @Getter
+    private String comment;
+
     @NotNull
     @Getter
     private ZonedDateTime time;
@@ -51,7 +54,7 @@ class JdbcSolutionAttempt {
                 .id(id)
                 .success(success)
                 .userId(userId)
+                .comment(comment)
                 .build();
     }
-
 }

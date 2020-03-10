@@ -84,13 +84,14 @@ public class Exam {
         questionRepository.add(this, question);
     }
 
-    public void addSolutionAttempt(String firstName, String lastName, String userId, boolean success) {
+    public void addSolutionAttempt(String firstName, String lastName, String userId, String comment, boolean success) {
         SolutionAttempt solutionAttempt = SolutionAttempt.builder()
                 .firstName(firstName)
                 .lastName(lastName)
                 .userId(userId)
                 .id(UUID.randomUUID())
                 .success(success)
+                .comment(comment)
                 .build();
         solutionAttemptRepository.add(this, solutionAttempt);
     }

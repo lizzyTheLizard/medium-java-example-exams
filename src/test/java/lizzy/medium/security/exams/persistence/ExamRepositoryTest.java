@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 @DataJpaTest
-@ImportAutoConfiguration({JdbcExamRepository.class})
+@ImportAutoConfiguration({JdbcExamRepository.class, JdbcSolutionAttemptRepository.class, JdbcQuestionRepository.class})
 public class ExamRepositoryTest {
     @Autowired
     JdbcExamRepository jdbcExamRepository;
