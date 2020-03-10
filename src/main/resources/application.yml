@@ -1,3 +1,7 @@
+server:
+  servlet:
+    context-path: "/api"
+
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
@@ -11,10 +15,22 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: "http://keycloak:8080/auth/realms/exam/protocol/openid-connect/certs"
-server:
-  servlet:
-    context-path: "/api"
+
 flyway:
   url: jdbc:postgresql://postgres:5432/postgres
   username: postgres
   password: postgres
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: "/swagger/ui"
+  api-docs:
+    enabled: true
+    path: "/swagger/docs"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

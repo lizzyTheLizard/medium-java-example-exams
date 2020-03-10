@@ -14,17 +14,14 @@ export interface Question {
 
 export interface Exam {
   title: string;
+  text: string;
   id: string;
   questions: Question[];
   owner: string;
 }
 
-export interface SuccessReturn {
-  participant: Participant;
-  status: string;
-}
-
 export interface Participant {
+  status: string;
   firstName: string;
   lastName: string;
   userId: string;
@@ -40,9 +37,9 @@ export class ExamService {
               private readonly httpClient: HttpClient,
               private readonly keycloakService: KeycloakService) { }
 
-  getParticipantsForExam(id: string): Observable<SuccessReturn[]> {
+  getParticipantsForExam(id: string): Observable<Participant[]> {
     this.progressSpinnerService.enable('get Participants');
-    return this.httpClient.get<SuccessReturn[]>(environment.apiUrl + 'exams/' + id + '/participants')
+    return this.httpClient.get<Participant[]>(environment.apiUrl + 'exams/' + id + '/participants')
       .pipe(this.errorHandler('get Participants'));
   }
 

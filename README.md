@@ -2,11 +2,11 @@
 medium-java-security-exams is an example project to study secure software development. 
 It contains a simple application to perform multiple-choice exams with multiple participants. 
 It therefore provides the following features:
-- A teacher can create an exam by uploading a XML-File with the exam definition. 
-- The teacher gets an exam key he can share with the students.
+- A teacher can create an jdbcExam by uploading a XML-File with the jdbcExam definition. 
+- The teacher gets an jdbcExam key he can share with the students.
 - Students can then perform the exams and get instant feedback if they responded the questions correctly.
-- The teacher can check who has already successfully taken the exam.
-- The teacher can stop the exam and get a final overview over the participants
+- The teacher can check who has already successfully taken the jdbcExam.
+- The teacher can stop the jdbcExam and get a final overview over the participants
 For authentication any OAuth2-Infrastructure providing access-tokens as JWT can be used. 
 The desired authentication server has to be configured in the angular application
 
