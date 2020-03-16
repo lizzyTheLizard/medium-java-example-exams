@@ -2,11 +2,11 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>
-        {{ exam.title }}
+        {{ exam?.title }}
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      {{ exam.text }}
+      {{ exam?.text }}
     </mat-card-content>
   </mat-card>
   <mat-card class="question" *ngFor="let question of exam?.questions; index as i;">

@@ -1,5 +1,6 @@
 package lizzy.medium.example.exams.persistence;
 
+import lizzy.medium.example.exams.domain.Exam;
 import lizzy.medium.example.exams.domain.Participation;
 import lizzy.medium.example.exams.domain.User;
 import lombok.*;
@@ -54,6 +55,20 @@ class JdbcParticipation {
     @Getter
     @PositiveOrZero
     private int remainingAttempts;
+
+    static JdbcParticipation of(Participation participation, Exam exam) {
+        return JdbcParticipation.builder()
+                .id(participation.getId())
+                .exam(JdbcExam.of(exam))
+                .successful(participation.isSuccessful())
+                .time(participation.getTime())
+                .userId(participation.getUser().getId())
+                .firstName(participation.getUser().getFirstName())
+                .lastName(participation.getUser().getLastName())
+                .remainingAttempts(participation.getRemainingAttempts())
+                .comment(participation.getComment())
+                .build();
+    }
 
     Participation toEntity() {
         User user = User.builder()

@@ -19,11 +19,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-//TODO This is unsafe code, it contains unsafe XML-deserialization
-
 @Component
 @RequiredArgsConstructor
 public class ExamXmlReader {
+    private final static DocumentBuilderFactory dbf = documentBuilderFactory();
     private final ExamFactory examFactory;
     private final ExamRepository examRepository;
 
@@ -93,8 +92,23 @@ public class ExamXmlReader {
                 .collect(Collectors.toList());
     }
 
+    private static DocumentBuilderFactory documentBuilderFactory() {
+        try {
+            //Generate a safe XML factory according to https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            dbf.setXIncludeAware(false);
+            dbf.setExpandEntityReferences(false);
+            return dbf;
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException("Cannot initialte document builder factory", e);
+        }
+    }
+
     public Exam read(User user, InputStream in) throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(in);
         doc.getDocumentElement().normalize();
