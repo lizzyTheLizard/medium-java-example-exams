@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MyExamGuard } from './my-jdbcExam.guard';
+import { MyExamGuard } from './my-exam.guard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { KeycloakAngularModule } from 'keycloak-angular';

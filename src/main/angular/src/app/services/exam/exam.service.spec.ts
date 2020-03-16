@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ExamService } from './jdbcExam.service';
+import { ExamService } from './exam.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { KeycloakAngularModule } from 'keycloak-angular';

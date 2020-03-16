@@ -36,7 +36,10 @@
           "type" : "password",
           "value" : "test"
 	}
-      ]
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      }
     }
   ]
 }

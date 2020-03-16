@@ -7,24 +7,31 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
 import { KeycloakService } from 'keycloak-angular';
 
+export interface Exam {
+  id: string;
+  questions: Question[];
+  title: string;
+  text: string;
+  owner: string;
+}
+
 export interface Question {
   text: string;
   options: string[];
 }
 
-export interface Exam {
-  title: string;
-  text: string;
-  id: string;
-  questions: Question[];
-  owner: string;
-}
-
 export interface Participant {
-  status: string;
+  userId: string;
   firstName: string;
   lastName: string;
-  userId: string;
+  successful: string;
+  comment: string;
+  remainingAttempts: number;
+}
+
+export interface Solution {
+  answers: number[];
+  comment: string;
 }
 
 @Injectable({
@@ -79,9 +86,9 @@ export class ExamService {
       .pipe(this.errorHandler('create Exam'));
   }
 
-  trySolve(id: string, answers: number[]): Observable<boolean> {
-    return this.httpClient.post<Exam>(environment.apiUrl + 'exams/' + id + '/solution', answers)
-      .pipe(this.errorHandler('try solve'));
+  trySolve(id: string, solution: Solution): Observable<boolean> {
+    return this.httpClient.post<Exam>(environment.apiUrl + 'exams/' + id + '/solution', solution)
+      .pipe(this.errorHandler('check solution'));
   }
 
   private errorHandler<T, R>(logInfo: string): OperatorFunction<T, R> {

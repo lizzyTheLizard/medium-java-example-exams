@@ -2,14 +2,14 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>
-        {{ jdbcExam.title }}
+        {{ exam.title }}
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      {{ jdbcExam.text }}
+      {{ exam.text }}
     </mat-card-content>
   </mat-card>
-  <mat-card class="question" *ngFor="let question of jdbcExam?.questions; index as i;">
+  <mat-card class="question" *ngFor="let question of exam?.questions; index as i;">
     <mat-card-header>
       <mat-card-title>
         Question {{i + 1 }}
@@ -32,7 +32,8 @@
     <mat-card-header>
     </mat-card-header>
     <mat-card-content class="buttons">
-      <button mat-raised-button color="primary" [disabled]="buttonDisabled()" (click)="submit()">Submit ({{triesLeft}} tries left)</button>
+      <input #comment matInput placeholder="Comment"/>
+      <button mat-raised-button color="primary" [disabled]="buttonDisabled()" (click)="submit(comment.value)">Submit ({{triesLeft}} tries left)</button>
     </mat-card-content>
   </mat-card>
 </div>

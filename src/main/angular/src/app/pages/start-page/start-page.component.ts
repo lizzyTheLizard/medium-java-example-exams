@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 
-import { ExamService, Exam } from '../../services/jdbcExam/jdbcExam.service';
+import { ExamService, Exam } from '../../services/exam/exam.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -23,14 +23,14 @@ export class StartPageComponent {
   displayedColumns = ['id', 'name'];
 
   navigateToKey() {
-    this.router.navigate(['/jdbcExam/', this.key]);
+    this.router.navigate(['/exam/', this.key]);
   }
 
   fileUpload(files: File[]) {
     this.examService.createExams(files).subscribe(
       newExam => {
         this.exams$ = this.examService.getExams();
-        this.snackBar.open('Create new jdbcExam', 'ok');
+        this.snackBar.open('Create new exam', 'ok');
         setTimeout(() => this.router.navigate(['/admin/', newExam.id]), 100);
       }
     );

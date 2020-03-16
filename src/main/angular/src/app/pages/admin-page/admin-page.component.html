@@ -1,7 +1,7 @@
 <div>
   <mat-card class="card">
-    <mat-card-content class="empty" *ngIf="jdbcExam">
-      Link to send out to participants: <a [routerLink]="['/jdbcExam/', jdbcExam.id]">{{link}}</a>
+    <mat-card-content class="empty" *ngIf="exam">
+      Link to send out to participations: <a [routerLink]="['/exam/', exam.id]">{{link}}</a>
     </mat-card-content>
   </mat-card>
   <mat-card class="card">
@@ -10,20 +10,23 @@
         Successfull Participants
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content *ngIf="participants?.length > 0; else elseBlock">
-      <table mat-table [dataSource]="participants">
+    <mat-card-content *ngIf="participations?.length > 0; else elseBlock">
+      <table mat-table [dataSource]="participations">
         <ng-container matColumnDef="name">
-          <td mat-cell *matCellDef="let row">{{row.jdbcParticipant.firstName}} {{row.jdbcParticipant.lastName}} ({{row.jdbcParticipant.userId}})</td>
+          <td mat-cell *matCellDef="let row">{{row.firstName}} {{row.lastName}} ({{row.userId}})</td>
         </ng-container>
         <ng-container matColumnDef="status">
-            <td mat-cell *matCellDef="let row">{{row.status}}</td>
-          </ng-container>
-          <tr mat-row *matRowDef="let row; columns: ['name', 'status'];"></tr>
+          <td mat-cell *matCellDef="let row">{{row.successful ? 'PASSED' : (row.remainingAttempts == 0 ? 'FAILED' : 'RUNNING')}}</td>
+        </ng-container>
+        <ng-container matColumnDef="comment">
+          <td mat-cell *matCellDef="let row">{{row.comment}}</td>
+        </ng-container>
+        <tr mat-row *matRowDef="let row; columns: ['name', 'status', 'comment'];"></tr>
       </table>
     </mat-card-content>
     <ng-template #elseBlock>
       <mat-card-content class="empty">
-        No participants so far...
+        No participations so far...
       </mat-card-content>
     </ng-template>
   </mat-card>

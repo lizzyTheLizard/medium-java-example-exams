@@ -25,7 +25,7 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { StartPageComponent } from './pages/start-page/start-page.component';
-import { ExamPageComponent } from './pages/jdbcExam-page/jdbcExam-page.component';
+import { ExamPageComponent } from './pages/exam-page/exam-page.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { AppComponent } from './components/app/app.component';
 import { environment } from 'src/environments/environment';
@@ -78,7 +78,7 @@ export class AppModule implements DoBootstrap {
       .init({
         config: {
           url: environment.keycloakUrl,
-          realm: 'jdbcExam',
+          realm: 'exam',
           clientId: 'ui'
         },
         initOptions: {
@@ -89,8 +89,8 @@ export class AppModule implements DoBootstrap {
         bearerExcludedUrls: ['/assets', '/clients/public']
       })
       .then(() => {
-        console.log('[ngDoBootstrap] bootstrap app');
         appRef.bootstrap(AppComponent);
+        console.log('[ngDoBootstrap] bootstrap app');
       })
       .catch(error => console.error('[ngDoBootstrap] init Keycloak failed', error));
   }
