@@ -28,11 +28,11 @@ docker run --rm -p 9080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=secret 
 
 Then the backend using an inmemory H2 database can be started using
 ```
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
 the frontend using node dev server can be started using
 ```
-npm start --prefix=src/main/angular/
+npm install --prefix=src/main/angular/ && npm start --prefix=src/main/angular/
 ```
 
