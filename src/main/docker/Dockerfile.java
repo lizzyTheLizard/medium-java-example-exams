@@ -1,4 +1,4 @@
-FROM maven AS build  
+FROM maven:3-jdk-11-openj9 AS build
 WORKDIR /build
 COPY pom.xml .
 RUN mvn dependency:go-offline
@@ -10,6 +10,6 @@ COPY src/test/exams /build/src/test/exams
 RUN mvn package
 
 FROM openjdk
-COPY --from=build /build/target/medium-java-security-exams.jar /medium-java-security-exams.jar
+COPY --from=build /build/target/medium-java-exams.jar /medium-java-exams.jar
 EXPOSE 8080  
-ENTRYPOINT ["java","-jar","/medium-java-security-exams.jar"]  
+ENTRYPOINT ["java","-jar","/medium-java-exams.jar"]  

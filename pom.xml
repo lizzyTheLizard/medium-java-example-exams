@@ -8,10 +8,10 @@
 		<version>2.2.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>lizzy.medium.security.exams</groupId>
-	<artifactId>medium-java-security-exams</artifactId>
+	<groupId>lizzy.medium.exams</groupId>
+	<artifactId>medium-java-exams</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>medium-java-security-exams</name>
+	<name>medium-java-exams</name>
 
 	<properties>
 		<java.version>1.8</java.version>
