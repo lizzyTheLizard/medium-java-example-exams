@@ -1,19 +1,19 @@
-package lizzy.medium.example.exams.domain;
+package lizzy.medium.example.exams.domain.model;
 
 import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Builder(access = AccessLevel.PUBLIC)
+@Value
+@Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Question {
-    public final int correctOption;
-    private final UUID id;
-    private final String text;
+    UUID id;
+    int correctOption;
+    String text;
     @Singular
-    private final List<String> options;
+    List<String> options;
 
     public boolean isCorrectOption(int option) {
         return correctOption == option;

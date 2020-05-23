@@ -1,4 +1,4 @@
-package lizzy.medium.example.exams.domain;
+package lizzy.medium.example.exams.domain.model;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,10 +12,10 @@ import java.util.UUID;
 @Builder
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Participation {
-    private final UUID id;
-    private final User user;
-    private final boolean successful;
-    private final int remainingAttempts;
-    private final String comment;
-    private final ZonedDateTime time;
+    UUID id;
+    User user;
+    boolean successful;
+    int remainingAttempts;
+    String comment;
+    ZonedDateTime time;
 }

@@ -1,9 +1,9 @@
 package lizzy.medium.example.exams.persistence;
 
-import lizzy.medium.example.exams.domain.Exam;
-import lizzy.medium.example.exams.domain.Participation;
-import lizzy.medium.example.exams.domain.ParticipationRepository;
-import lizzy.medium.example.exams.domain.User;
+import lizzy.medium.example.exams.domain.model.Exam;
+import lizzy.medium.example.exams.domain.model.Participation;
+import lizzy.medium.example.exams.domain.model.ParticipationRepository;
+import lizzy.medium.example.exams.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

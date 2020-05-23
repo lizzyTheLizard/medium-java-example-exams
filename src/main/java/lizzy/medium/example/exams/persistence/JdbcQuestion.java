@@ -1,7 +1,7 @@
 package lizzy.medium.example.exams.persistence;
 
-import lizzy.medium.example.exams.domain.Exam;
-import lizzy.medium.example.exams.domain.Question;
+import lizzy.medium.example.exams.domain.model.Exam;
+import lizzy.medium.example.exams.domain.model.Question;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,13 +1,11 @@
 package lizzy.medium.example.exams.persistence;
 
-import lizzy.medium.example.exams.domain.Exam;
-import lizzy.medium.example.exams.domain.Question;
+import lizzy.medium.example.exams.domain.TestData;
+import lizzy.medium.example.exams.domain.model.Question;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.opentest4j.AssertionFailedError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +30,12 @@ public class QuestionRepositoryTest {
 
     JdbcExam jdbcExam;
 
-    @Mock
-    private Exam exam;
-
     @BeforeEach
     void setup() {
         questionRepository.findAll().forEach(questionRepository::delete);
         examRepository.findAll().forEach(examRepository::delete);
         JdbcExam jdbcExam = JdbcExam.builder()
-                .id(UUID.randomUUID())
+                .id(TestData.exam.getId())
                 .closed(false)
                 .maxAttempts(1)
                 .owner("test")
@@ -48,7 +43,6 @@ public class QuestionRepositoryTest {
                 .title("test")
                 .build();
         this.jdbcExam = examRepository.save(jdbcExam);
-        Mockito.when(exam.getId()).thenReturn(jdbcExam.getId());
     }
 
     @Test
@@ -62,34 +56,25 @@ public class QuestionRepositoryTest {
                 .build();
         questionRepository.save(question);
 
-        List<Question> results = jdbcQuestionRepository.getQuestions(exam);
+        List<Question> results = jdbcQuestionRepository.getQuestions(TestData.exam);
 
         Assertions.assertEquals(1, results.size());
         Question result = results.get(0);
+        Assertions.assertIterableEquals(question.getOptions(), result.getOptions());
         Assertions.assertEquals(question.getOptions().size(), result.getOptions().size());
         Assertions.assertEquals(question.getOptions().get(0), result.getOptions().get(0));
-        Assertions.assertEquals(question.getText(), result.getText());
-        Assertions.assertEquals(question.getCorrectOption(), result.getCorrectOption());
-        Assertions.assertEquals(question.getId(), result.getId());
     }
 
     @Test
     void add() {
-        Question question = Question.builder()
-                .correctOption(1)
-                .id(UUID.randomUUID())
-                .option("op1")
-                .text("test")
-                .build();
+        jdbcQuestionRepository.add(TestData.exam, TestData.question);
 
-        jdbcQuestionRepository.add(exam, question);
+        JdbcQuestion result = questionRepository.findById(TestData.question.getId()).orElseThrow(AssertionFailedError::new);
 
-        JdbcQuestion result = questionRepository.findById(question.getId()).orElseThrow(AssertionFailedError::new);
-        Assertions.assertEquals(question.getOptions().size(), result.getOptions().size());
-        Assertions.assertEquals(question.getOptions().get(0), result.getOptions().get(0));
-        Assertions.assertEquals(question.getText(), result.getText());
-        Assertions.assertEquals(question.getCorrectOption(), result.getCorrectOption());
-        Assertions.assertEquals(question.getId(), result.getId());
+        Assertions.assertIterableEquals(TestData.question.getOptions(), result.getOptions());
+        Assertions.assertEquals(TestData.question.getText(), result.getText());
+        Assertions.assertEquals(TestData.question.getCorrectOption(), result.getCorrectOption());
+        Assertions.assertEquals(TestData.question.getId(), result.getId());
         Assertions.assertNotNull(result.getExam());
         Assertions.assertEquals(jdbcExam.getId(), result.getExam().getId());
     }

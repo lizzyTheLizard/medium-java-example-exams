@@ -1,8 +1,8 @@
 package lizzy.medium.example.exams.persistence;
 
-import lizzy.medium.example.exams.domain.Exam;
-import lizzy.medium.example.exams.domain.Question;
-import lizzy.medium.example.exams.domain.QuestionRepository;
+import lizzy.medium.example.exams.domain.model.Exam;
+import lizzy.medium.example.exams.domain.model.Question;
+import lizzy.medium.example.exams.domain.model.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

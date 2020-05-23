@@ -1,4 +1,4 @@
-package lizzy.medium.example.exams.domain;
+package lizzy.medium.example.exams.domain.model;
 
 import java.util.Collection;
 import java.util.Optional;

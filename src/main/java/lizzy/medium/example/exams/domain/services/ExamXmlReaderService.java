@@ -1,6 +1,6 @@
-package lizzy.medium.example.exams.web.exams;
+package lizzy.medium.example.exams.domain.services;
 
-import lizzy.medium.example.exams.domain.*;
+import lizzy.medium.example.exams.domain.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -21,10 +21,10 @@ import java.util.stream.IntStream;
 
 @Component
 @RequiredArgsConstructor
-public class ExamXmlReader {
+public class ExamXmlReaderService {
     private final static DocumentBuilderFactory dbf = documentBuilderFactory();
-    private final ExamFactory examFactory;
     private final ExamRepository examRepository;
+    private final QuestionRepository questionRepository;
 
     private static String getText(Element root) {
         NodeList childNodes = root.getChildNodes();
@@ -43,16 +43,6 @@ public class ExamXmlReader {
 
     private static int getMaxAttempt(Element root) {
         return Integer.parseInt(root.getAttribute("maxAttempts"));
-    }
-
-    private static void readQuestions(Element root, Exam exam) {
-        NodeList nodes = root.getElementsByTagName("question");
-        IntStream.range(0, nodes.getLength())
-                .mapToObj(nodes::item)
-                .filter(n -> n.getNodeType() == Node.ELEMENT_NODE)
-                .filter(n -> n.getNodeName().equals("question"))
-                .map(ExamXmlReader::readQuestion)
-                .forEach(exam::addQuestion);
     }
 
     private static Question readQuestion(Node questionNode) {
@@ -108,12 +98,22 @@ public class ExamXmlReader {
         }
     }
 
+    private void readQuestions(Element root, Exam exam) {
+        NodeList nodes = root.getElementsByTagName("question");
+        IntStream.range(0, nodes.getLength())
+                .mapToObj(nodes::item)
+                .filter(n -> n.getNodeType() == Node.ELEMENT_NODE)
+                .filter(n -> n.getNodeName().equals("question"))
+                .map(ExamXmlReaderService::readQuestion)
+                .forEach(q -> questionRepository.add(exam, q));
+    }
+
     public Exam read(User user, InputStream in) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(in);
         doc.getDocumentElement().normalize();
         Element root = doc.getDocumentElement();
-        Exam result = examFactory.create()
+        Exam result = Exam.builder()
                 .id(UUID.randomUUID())
                 .text(getText(root))
                 .title(getTitle(root))

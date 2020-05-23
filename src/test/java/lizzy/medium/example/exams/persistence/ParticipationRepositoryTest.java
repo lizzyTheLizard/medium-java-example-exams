@@ -1,14 +1,11 @@
 package lizzy.medium.example.exams.persistence;
 
-import lizzy.medium.example.exams.domain.Exam;
-import lizzy.medium.example.exams.domain.Participation;
-import lizzy.medium.example.exams.domain.User;
+import lizzy.medium.example.exams.domain.TestData;
+import lizzy.medium.example.exams.domain.model.Participation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -23,26 +20,19 @@ import java.util.UUID;
 @DataJpaTest
 @ImportAutoConfiguration({JdbcParticipationRepository.class})
 public class ParticipationRepositoryTest {
-    private final static User user = User.builder()
-            .firstName("first")
-            .lastName("last")
-            .id("userid")
-            .build();
     @Autowired
     JdbcParticipationRepository jdbcParticipationRepository;
     @Autowired
     JdbcParticipationSpringDataRepository participationSpringDataRepository;
     @Autowired
     JdbcExamSpringDataRepository examRepository;
-    @Mock
-    private Exam exam;
     private JdbcParticipation jdbcParticipation;
 
     @BeforeEach
     void setup() {
         examRepository.findAll().forEach(examRepository::delete);
         JdbcExam jdbcExam = JdbcExam.builder()
-                .id(UUID.randomUUID())
+                .id(TestData.exam.getId())
                 .closed(false)
                 .maxAttempts(1)
                 .owner("test")
@@ -50,15 +40,14 @@ public class ParticipationRepositoryTest {
                 .title("test")
                 .build();
         jdbcExam = examRepository.save(jdbcExam);
-        Mockito.when(exam.getId()).thenReturn(jdbcExam.getId());
 
         participationSpringDataRepository.findAll().forEach(participationSpringDataRepository::delete);
         JdbcParticipation jdbcParticipation = JdbcParticipation.builder()
                 .id(UUID.randomUUID())
                 .exam(jdbcExam)
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .userId(user.getId())
+                .firstName(TestData.user.getFirstName())
+                .lastName(TestData.user.getLastName())
+                .userId(TestData.user.getId())
                 .time(ZonedDateTime.now().minus(100, ChronoUnit.SECONDS))
                 .successful(false)
                 .comment("Initial")
@@ -69,13 +58,13 @@ public class ParticipationRepositoryTest {
 
     @Test
     void getNumberOfFailed() {
-        int result = jdbcParticipationRepository.getNumberOfFailed(exam, user);
+        int result = jdbcParticipationRepository.getNumberOfFailed(TestData.exam, TestData.user);
         Assertions.assertEquals(1, result);
     }
 
     @Test
     void getMostRecentForeachUser() {
-        List<Participation> result = jdbcParticipationRepository.getMostRecentForeachUser(exam);
+        List<Participation> result = jdbcParticipationRepository.getMostRecentForeachUser(TestData.exam);
         Assertions.assertEquals(1, result.size());
         Assertions.assertEquals(jdbcParticipation.getUserId(), result.get(0).getUser().getId());
         Assertions.assertEquals(jdbcParticipation.getFirstName(), result.get(0).getUser().getFirstName());
@@ -89,24 +78,15 @@ public class ParticipationRepositoryTest {
 
     @Test
     void add() {
-        Participation participation = Participation.builder()
-                .id(UUID.randomUUID())
-                .user(user)
-                .time(ZonedDateTime.now().plus(100, ChronoUnit.SECONDS))
-                .successful(true)
-                .time(ZonedDateTime.now())
-                .comment("This time it worked")
-                .remainingAttempts(1)
-                .build();
-        jdbcParticipationRepository.add(exam, participation);
+        jdbcParticipationRepository.add(TestData.exam, TestData.participation);
 
-        List<Participation> result = jdbcParticipationRepository.getMostRecentForeachUser(exam);
+        List<Participation> result = jdbcParticipationRepository.getMostRecentForeachUser(TestData.exam);
         Assertions.assertEquals(1, result.size());
-        Assertions.assertEquals(user, result.get(0).getUser());
-        Assertions.assertEquals(participation.getId(), result.get(0).getId());
-        Assertions.assertEquals(participation.isSuccessful(), result.get(0).isSuccessful());
-        Assertions.assertEquals(participation.getComment(), result.get(0).getComment());
-        Assertions.assertEquals(participation.getRemainingAttempts(), result.get(0).getRemainingAttempts());
-        Assertions.assertEquals(participation.getTime(), result.get(0).getTime());
+        Assertions.assertEquals(TestData.user, result.get(0).getUser());
+        Assertions.assertEquals(TestData.participation.getId(), result.get(0).getId());
+        Assertions.assertEquals(TestData.participation.isSuccessful(), result.get(0).isSuccessful());
+        Assertions.assertEquals(TestData.participation.getComment(), result.get(0).getComment());
+        Assertions.assertEquals(TestData.participation.getRemainingAttempts(), result.get(0).getRemainingAttempts());
+        Assertions.assertEquals(TestData.participation.getTime(), result.get(0).getTime());
     }
 }

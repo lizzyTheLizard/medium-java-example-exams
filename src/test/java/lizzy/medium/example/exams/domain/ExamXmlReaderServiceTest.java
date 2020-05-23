@@ -1,49 +1,42 @@
-package lizzy.medium.example.exams.web.exams;
+package lizzy.medium.example.exams.domain;
 
-import lizzy.medium.example.exams.domain.*;
+import lizzy.medium.example.exams.domain.model.*;
+import lizzy.medium.example.exams.domain.services.ExamXmlReaderService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
 @ExtendWith(MockitoExtension.class)
-class JdbcExamXmlReaderTest {
+@ExtendWith(SpringExtension.class)
+@Import(ExamXmlReaderService.class)
+class ExamXmlReaderServiceTest {
     private final static User user = User.builder()
             .id("test")
             .firstName("first")
             .lastName("last")
             .build();
 
-    @Mock
-    private ExamFactory examFactory;
-    @Mock
-    private ParticipationRepository participationRepository;
-    @Mock
+    @Autowired
+    private ExamXmlReaderService target;
+    @MockBean
     private ExamRepository examRepository;
-    @Mock
+    @MockBean
     private QuestionRepository questionRepository;
-
-    @BeforeEach
-    void setup() {
-        Exam.ExamBuilder builder = Exam.builder()
-                .examRepository(examRepository)
-                .participationRepository(participationRepository)
-                .questionRepository(questionRepository);
-        Mockito.when(examFactory.create()).thenReturn(builder);
-    }
 
     @Test
     void exam() throws Exception {
         InputStream in = new FileInputStream(new File("src/test/exams/simple.xml"));
-        ExamXmlReader target = new ExamXmlReader(examFactory, examRepository);
 
         Exam result = target.read(user, in);
 
@@ -56,7 +49,6 @@ class JdbcExamXmlReaderTest {
     @Test
     void addExamToRepository() throws Exception {
         InputStream in = new FileInputStream(new File("src/test/exams/simple.xml"));
-        ExamXmlReader target = new ExamXmlReader(examFactory, examRepository);
 
         Exam result = target.read(user, in);
 
@@ -66,7 +58,6 @@ class JdbcExamXmlReaderTest {
     @Test
     void question() throws Exception {
         InputStream in = new FileInputStream(new File("src/test/exams/simple.xml"));
-        ExamXmlReader target = new ExamXmlReader(examFactory, examRepository);
 
         Exam result = target.read(user, in);
 
@@ -81,7 +72,6 @@ class JdbcExamXmlReaderTest {
     @Test
     void multipleQuestions() throws Exception {
         InputStream in = new FileInputStream(new File("src/test/exams/simple.xml"));
-        ExamXmlReader target = new ExamXmlReader(examFactory, examRepository);
 
         Exam result = target.read(user, in);
 
@@ -96,7 +86,6 @@ class JdbcExamXmlReaderTest {
     @Test
     void answer() throws Exception {
         InputStream in = new FileInputStream(new File("src/test/exams/simple.xml"));
-        ExamXmlReader target = new ExamXmlReader(examFactory, examRepository);
 
         Exam result = target.read(user, in);
 
@@ -109,7 +98,6 @@ class JdbcExamXmlReaderTest {
     @Test
     void multipleAnswer() throws Exception {
         InputStream in = new FileInputStream(new File("src/test/exams/simple.xml"));
-        ExamXmlReader target = new ExamXmlReader(examFactory, examRepository);
 
         Exam result = target.read(user, in);
 

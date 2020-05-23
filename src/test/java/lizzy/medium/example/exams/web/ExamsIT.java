@@ -1,9 +1,9 @@
-package lizzy.medium.example.exams.web.integration;
+package lizzy.medium.example.exams.web;
 
-import lizzy.medium.example.exams.domain.Exam;
-import lizzy.medium.example.exams.domain.ExamFactory;
-import lizzy.medium.example.exams.domain.ExamRepository;
-import lizzy.medium.example.exams.domain.Question;
+import lizzy.medium.example.exams.domain.model.Exam;
+import lizzy.medium.example.exams.domain.model.ExamRepository;
+import lizzy.medium.example.exams.domain.model.Question;
+import lizzy.medium.example.exams.domain.model.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,6 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.UUID;
 
-import static lizzy.medium.example.exams.web.integration.ITSecurityConfig.generateToken;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -39,10 +38,10 @@ class ExamsIT {
     ExamRepository examRepository;
 
     @Autowired
-    EntityManager entityManager;
+    QuestionRepository questionRepository;
 
     @Autowired
-    ExamFactory examFactory;
+    EntityManager entityManager;
 
     private Exam exam;
     private Question question;
@@ -50,7 +49,7 @@ class ExamsIT {
     @BeforeEach
     void setup() {
         entityManager.createNativeQuery("TRUNCATE TABLE Exam").executeUpdate();
-        exam = examFactory.create()
+        exam = Exam.builder()
                 .id(UUID.randomUUID())
                 .maxAttempts(2)
                 .closed(false)
@@ -66,14 +65,14 @@ class ExamsIT {
                 .text("text1")
                 .options(Collections.singletonList("option1"))
                 .build();
-        exam.addQuestion(question);
+        questionRepository.add(exam, question);
     }
 
     @Test
     void getAllForUser() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .get("/exams")
-                .header(HttpHeaders.AUTHORIZATION, "bearer " + generateToken("user"));
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + ITSecurityConfig.generateToken("user"));
 
         mockMvc.perform(request)
                 .andDo(System.out::println)
@@ -94,7 +93,7 @@ class ExamsIT {
     void getAllForUserEmpty() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .get("/exams")
-                .header(HttpHeaders.AUTHORIZATION, "bearer " + generateToken("user2"));
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + ITSecurityConfig.generateToken("user2"));
 
         mockMvc.perform(request)
                 .andDo(System.out::println)
@@ -107,7 +106,7 @@ class ExamsIT {
     void solve() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .post("/exams/" + exam.getId() + "/solution")
-                .header(HttpHeaders.AUTHORIZATION, "bearer " + generateToken("user2"))
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + ITSecurityConfig.generateToken("user2"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"answers\": [1], \"comment\": \"test\"}");
 
@@ -122,7 +121,7 @@ class ExamsIT {
     void solveWrong() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .post("/exams/" + exam.getId() + "/solution")
-                .header(HttpHeaders.AUTHORIZATION, "bearer " + generateToken("user2"))
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + ITSecurityConfig.generateToken("user2"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"answers\": [2], \"comment\": \"test\"}");
 

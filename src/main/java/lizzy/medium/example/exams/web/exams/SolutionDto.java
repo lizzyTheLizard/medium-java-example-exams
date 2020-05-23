@@ -8,6 +8,6 @@ import java.util.List;
 @Value
 @Builder
 class SolutionDto {
-    private final List<Integer> answers;
-    private final String comment;
+    List<Integer> answers;
+    String comment;
 }

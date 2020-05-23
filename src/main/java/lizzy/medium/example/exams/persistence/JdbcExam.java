@@ -1,7 +1,6 @@
 package lizzy.medium.example.exams.persistence;
 
-import lizzy.medium.example.exams.domain.Exam;
-import lizzy.medium.example.exams.domain.ExamFactory;
+import lizzy.medium.example.exams.domain.model.Exam;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -58,8 +57,8 @@ class JdbcExam {
     }
 
 
-    Exam toAggregate(ExamFactory examFactory) {
-        return examFactory.create()
+    Exam toAggregate() {
+        return Exam.builder()
                 .text(text)
                 .ownerId(owner)
                 .maxAttempts(maxAttempts)

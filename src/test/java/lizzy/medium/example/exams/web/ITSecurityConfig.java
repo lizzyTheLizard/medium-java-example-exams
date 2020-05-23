@@ -1,4 +1,4 @@
-package lizzy.medium.example.exams.web.integration;
+package lizzy.medium.example.exams.web;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
