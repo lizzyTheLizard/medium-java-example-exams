@@ -10,12 +10,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AdminPageComponent } from './admin-page.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KeycloakAngularModule } from 'keycloak-angular';
 
 describe('AdminPageComponent', () => {
   let component: AdminPageComponent;
   let fixture: ComponentFixture<AdminPageComponent>;
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,7 +30,7 @@ describe('AdminPageComponent', () => {
         MatIconModule,
         MatMenuModule,
         MatSnackBarModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         KeycloakAngularModule,
         RouterTestingModule
       ]

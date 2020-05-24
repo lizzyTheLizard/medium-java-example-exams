@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ExamPageComponent } from './exam-page.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KeycloakAngularModule } from 'keycloak-angular';
 
 describe('ExamPageComponent', () => {
@@ -29,7 +29,7 @@ describe('ExamPageComponent', () => {
         MatIconModule,
         MatMenuModule,
         MatSnackBarModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         KeycloakAngularModule,
         RouterTestingModule
       ]

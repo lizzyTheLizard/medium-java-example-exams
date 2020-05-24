@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { StartPageComponent } from './start-page.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KeycloakAngularModule } from 'keycloak-angular';
 
 describe('StartPageComponent', () => {
@@ -29,7 +29,7 @@ describe('StartPageComponent', () => {
         MatIconModule,
         MatMenuModule,
         MatSnackBarModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         KeycloakAngularModule,
         RouterTestingModule
       ]
