@@ -1,0 +1,46 @@
+{
+  "id": "exams",
+  "realm": "exam",
+  "enabled": true,
+  "registrationAllowed": true,
+  "clients": [
+    {
+      "id": "de6197b5-ea94-4283-8ebd-4778f2158deb",
+      "clientId": "ui",
+      "enabled": true,
+      "redirectUris": [
+        "http://localhost:4200/*",
+        "http://localhost:8080/*",
+        "https://localhost/*"
+      ],
+      "webOrigins": [
+        "+"
+      ],
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "protocol": "openid-connect"
+    }
+  ],  
+  "users": [
+    {
+      "id": "64d066bb-a799-4904-81dc-0e851bef2a5f",
+      "username": "user",
+      "enabled": "true",
+      "firstName": "Test",
+      "lastName": "User",
+      "email": "test@user.com",
+      "credentials" : [
+        {
+          "type" : "password",
+          "value" : "test"
+	}
+      ],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      }
+    }
+  ]
+}

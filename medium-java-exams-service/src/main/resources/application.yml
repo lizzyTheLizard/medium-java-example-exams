@@ -1,0 +1,30 @@
+server:
+  forward-headers-strategy: framework
+spring:
+  flyway:
+    baselineOnMigrate: true
+    baselineVersion: 0
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:9080/auth/realms/exam/protocol/openid-connect/certs"
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+flyway:
+  url: jdbc:postgresql://localhost:5432/postgres
+  username: postgres
+  password: postgres
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: "/swagger/ui"
+  api-docs:
+    enabled: true
+    path: "/swagger/docs"
+
