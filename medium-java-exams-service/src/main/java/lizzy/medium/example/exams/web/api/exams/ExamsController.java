@@ -40,7 +40,7 @@ class ExamsController {
     private final ExamSolveService examSolveService;
 
     @Operation(summary = "Find all Exams", description = "Find all exams of the current user, including closed exams", operationId = "readAll")
-    @GetMapping(produces = {"application/json", "application/xml"})
+    @GetMapping(produces = {"application/json"})
     Collection<ExamDto> list() {
         User user = getUser();
         return examService.findAllRunningOwnedBy(user).stream()
@@ -50,7 +50,7 @@ class ExamsController {
 
     @Operation(summary = "Find single Exams", description = "Get a single (not closed) exam", operationId = "read")
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
-    @GetMapping(value = "/{examId}", produces = {"application/json", "application/xml"})
+    @GetMapping(value = "/{examId}", produces = {"application/json"})
     ExamDto get(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId) {
         Exam exam = examService.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
@@ -79,7 +79,7 @@ class ExamsController {
 
     @Operation(summary = "Create an Exams", description = "Create a new exam by uploading an XML-File with the exam description", operationId = "create")
     @ApiResponse(responseCode = "400", description = "XML-File not valid", content = @Content())
-    @PostMapping(produces = {"application/json", "application/xml"})
+    @PostMapping(produces = {"application/json"})
     ExamDto create(@Parameter(description = "An exam description file") @RequestParam("file") MultipartFile file) {
         User user = getUser();
         try {
@@ -94,7 +94,7 @@ class ExamsController {
     @Operation(summary = "Try a solution", description = "Try a solution for a given exam, returns true or false depending if the check if successful", operationId = "check")
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The selected option for each question in the exam")
-    @PostMapping(value = "/{examId}/solution", produces = {"application/json", "application/xml"})
+    @PostMapping(value = "/{examId}/solution", produces = {"application/json"})
     boolean trySolution(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId, @RequestBody SolutionDto solution) {
         Exam exam = examService.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
@@ -111,7 +111,7 @@ class ExamsController {
 
     @Operation(summary = "Get tries left", description = "Get the number of tries left for a given exam", operationId = "triesLeft")
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
-    @GetMapping(value = "/{examId}/triesLeft", produces = {"application/json", "application/xml"})
+    @GetMapping(value = "/{examId}/triesLeft", produces = {"application/json"})
     int triesLeft(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId) {
         User user = getUser();
         return examService.findById(examId)
@@ -122,7 +122,7 @@ class ExamsController {
     @Operation(summary = "Get participants", description = "Get the participants of a given exam", operationId = "participants")
     @ApiResponse(responseCode = "403", description = "Not My Exam", content = @Content())
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
-    @GetMapping(value = "/{examId}/participants", produces = {"application/json", "application/xml"})
+    @GetMapping(value = "/{examId}/participants", produces = {"application/json"})
     List<ParticipationDto> participants(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId) {
         Exam exam = examService.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));

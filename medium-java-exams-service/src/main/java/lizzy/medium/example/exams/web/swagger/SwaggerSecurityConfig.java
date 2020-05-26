@@ -5,12 +5,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
-@Order(Ordered.HIGHEST_PRECEDENCE+12)
+@Order(Ordered.HIGHEST_PRECEDENCE + 12)
 public class SwaggerSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
