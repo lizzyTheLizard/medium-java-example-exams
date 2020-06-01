@@ -38,8 +38,9 @@ class ExamsController {
     private final ExamCloseService examCloseService;
     private final ExamXmlReaderService examXmlReaderService;
     private final ExamSolveService examSolveService;
+    private final static String EXAMPLE_ID = "1383424-73a7-4834-8859-e1e7db9812b8";
 
-    @Operation(summary = "Find all Exams", description = "Find all exams of the current user, including closed exams", operationId = "readAll")
+    @Operation(summary = "Find all Exams", description = "Find all exams of the current user, including closed exams")
     @GetMapping(produces = {"application/json"})
     Collection<ExamDto> list() {
         User user = getUser();
@@ -48,10 +49,10 @@ class ExamsController {
                 .collect(Collectors.toList());
     }
 
-    @Operation(summary = "Find single Exams", description = "Get a single (not closed) exam", operationId = "read")
+    @Operation(summary = "Find single Exams", description = "Get a single (not closed) exam")
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
     @GetMapping(value = "/{examId}", produces = {"application/json"})
-    ExamDto get(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId) {
+    ExamDto get(@Parameter(description = "ID of the exam", example=EXAMPLE_ID) @PathVariable("examId") UUID examId) {
         Exam exam = examService.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         if (exam.isClosed()) {
@@ -60,11 +61,11 @@ class ExamsController {
         return ExamDto.of(exam, examService.getQuestions(exam));
     }
 
-    @Operation(summary = "Close an Exams", description = "Close a single (not closed) exam", operationId = "close")
+    @Operation(summary = "Close an Exams", description = "Close a single (not closed) exam")
     @ApiResponse(responseCode = "403", description = "Not My Exam", content = @Content())
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
     @DeleteMapping("/{examId}")
-    void delete(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId) {
+    void delete(@Parameter(description = "ID of the exam", example=EXAMPLE_ID) @PathVariable("examId") UUID examId) {
         Exam exam = examService.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         User user = getUser();
@@ -77,7 +78,7 @@ class ExamsController {
         examCloseService.close(exam);
     }
 
-    @Operation(summary = "Create an Exams", description = "Create a new exam by uploading an XML-File with the exam description", operationId = "create")
+    @Operation(summary = "Create an Exams", description = "Create a new exam by uploading an XML-File with the exam description")
     @ApiResponse(responseCode = "400", description = "XML-File not valid", content = @Content())
     @PostMapping(produces = {"application/json"})
     ExamDto create(@Parameter(description = "An exam description file") @RequestParam("file") MultipartFile file) {
@@ -91,11 +92,12 @@ class ExamsController {
         }
     }
 
-    @Operation(summary = "Try a solution", description = "Try a solution for a given exam, returns true or false depending if the check if successful", operationId = "check")
+    @Operation(summary = "Try a solution", description = "Try a solution for a given exam, returns true or false depending if the check if successful")
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The selected option for each question in the exam")
     @PostMapping(value = "/{examId}/solution", produces = {"application/json"})
-    boolean trySolution(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId, @RequestBody SolutionDto solution) {
+    boolean trySolution(@Parameter(description = "ID of the exam", example=EXAMPLE_ID) @PathVariable("examId") UUID examId,
+                        @RequestBody SolutionDto solution) {
         Exam exam = examService.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         User user = getUser();
@@ -109,21 +111,21 @@ class ExamsController {
         return response == ExamSolveService.SolveResponse.SUCCESSFUL;
     }
 
-    @Operation(summary = "Get tries left", description = "Get the number of tries left for a given exam", operationId = "triesLeft")
+    @Operation(summary = "Get tries left", description = "Get the number of tries left for a given exam")
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
     @GetMapping(value = "/{examId}/triesLeft", produces = {"application/json"})
-    int triesLeft(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId) {
+    int triesLeft(@Parameter(description = "ID of the exam", example=EXAMPLE_ID) @PathVariable("examId") UUID examId) {
         User user = getUser();
         return examService.findById(examId)
                 .map(exam -> examSolveService.getTriesLeft(exam, user))
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
-    @Operation(summary = "Get participants", description = "Get the participants of a given exam", operationId = "participants")
+    @Operation(summary = "Get participants", description = "Get the participants of a given exam")
     @ApiResponse(responseCode = "403", description = "Not My Exam", content = @Content())
     @ApiResponse(responseCode = "404", description = "Exam does not exists or is closed", content = @Content())
     @GetMapping(value = "/{examId}/participants", produces = {"application/json"})
-    List<ParticipationDto> participants(@Parameter(description = "ID of the exam") @PathVariable("examId") UUID examId) {
+    List<ParticipationDto> participants(@Parameter(description = "ID of the exam", example=EXAMPLE_ID) @PathVariable("examId") UUID examId) {
         Exam exam = examService.findById(examId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         User user = getUser();
