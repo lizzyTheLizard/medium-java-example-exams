@@ -12,6 +12,6 @@ class FrontendSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll();
-        http.headers().contentSecurityPolicy("default-src 'self'");
+        http.headers().contentSecurityPolicy("default-src 'self' 'unsafe-inline' http://localhost:9080");
     }
 }

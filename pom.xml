@@ -12,5 +12,6 @@
 	<modules>
 		<module>medium-java-exams-ui</module>
 		<module>medium-java-exams-service</module>
+		<module>medium-java-exams-e2e</module>
 	</modules>
 </project>
