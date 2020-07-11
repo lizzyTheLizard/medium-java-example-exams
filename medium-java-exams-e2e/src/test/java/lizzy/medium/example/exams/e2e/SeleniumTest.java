@@ -9,15 +9,18 @@ import net.bytebuddy.utility.RandomString;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class SeleniumTest {
+    private final static String ZAP_PROXY_PORT = System.getProperty("zap_proxy", "51432");
     private final static String createExamDescription = "Explain!";
     private static FirefoxDriver driver;
     private AdminExamPage adminExamPage;
@@ -26,11 +29,18 @@ public class SeleniumTest {
     @BeforeAll
     static void beforeTest() {
         FirefoxBinary firefoxBinary = new FirefoxBinary();
-        firefoxBinary.addCommandLineOptions("--headless");
+        //firefoxBinary.addCommandLineOptions("--headless");
         firefoxBinary.addCommandLineOptions("--no-sandbox");
         System.setProperty("webdriver.gecko.driver", "drivers/geckodriver-linux-64bit");
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.setBinary(firefoxBinary);
+        if(ZAP_PROXY_PORT != null) {
+            firefoxOptions.addPreference("network.proxy.allow_hijacking_localhost", true);
+            firefoxOptions.setProxy(new Proxy()
+                    .setHttpProxy("localhost:" + ZAP_PROXY_PORT)
+                    .setSslProxy("localhost:" + ZAP_PROXY_PORT)
+                    .setNoProxy("*.mozilla.net,*.firefox.com"));
+        }
         driver = new FirefoxDriver(firefoxOptions);
         MainPage mainPage = LoginPage.login(driver);
         mainPage.getMyExams().forEach(examName -> mainPage.adminExam(examName).close());

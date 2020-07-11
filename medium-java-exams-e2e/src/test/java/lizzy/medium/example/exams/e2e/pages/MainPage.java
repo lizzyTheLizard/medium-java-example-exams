@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 
 public class MainPage {
-    final static String URL = System.getProperty("host", "http://localhost:8080/");
+    final static String URL = "http://localhost:8080/";
     private final WebDriver webDriver;
     @FindBy(id = "mat-input-0")
     private WebElement examInput = null;
