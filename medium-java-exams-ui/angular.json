@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "exams": {
+    "medium-java-exams-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "exams:build"
+            "browserTarget": "medium-java-exams-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "exams:build:production"
+              "browserTarget": "medium-java-exams-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "exams:build"
+            "browserTarget": "medium-java-exams-ui:build"
           }
         },
         "test": {
@@ -116,19 +116,19 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "exams:serve"
+            "devServerTarget": "medium-java-exams-ui:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "exams:serve:production"
+              "devServerTarget": "medium-java-exams-ui:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "exams",
+  "defaultProject": "medium-java-exams-ui",
   "cli": {
-    "analytics": "7d1a3371-e1f4-4a21-8f95-46ae60e50c0a"
+    "analytics": "a548470f-a0b5-475c-ba2b-1cfb6d9074e0"
   }
 }

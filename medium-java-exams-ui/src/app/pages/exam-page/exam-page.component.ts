@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map, flatMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Exam, ExamService } from '../../services/exam/exam.service';
 
@@ -19,10 +19,10 @@ export class ExamPageComponent implements OnInit {
               private readonly examService: ExamService,
               private readonly snackBar: MatSnackBar) { }
 
-  ngOnInit() {
+  ngOnInit(): void{
     this.route.params.pipe(
         map(params => params.id),
-        flatMap(id => this.examService.getExam(id)))
+        mergeMap(id => this.examService.getExam(id)))
       .subscribe(exam => {
         this.exam = exam;
         this.answers = new Map();

@@ -22,11 +22,11 @@ export class StartPageComponent {
   exams$: Observable<Exam[]>;
   displayedColumns = ['id', 'name'];
 
-  navigateToKey() {
+  navigateToKey(): void {
     this.router.navigate(['/exam/', this.key]);
   }
 
-  fileUpload(files: File[]) {
+  fileUpload(files: File[]): void {
     this.examService.createExams(files).subscribe(
       newExam => {
         this.exams$ = this.examService.getExams();
@@ -36,7 +36,7 @@ export class StartPageComponent {
     );
   }
 
-  check(id: string) {
+  check(id: string): void {
     this.router.navigate(['/admin/', id]);
   }
 

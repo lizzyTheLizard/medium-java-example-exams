@@ -45,7 +45,7 @@ export class ProgressSpinnerComponent implements OnInit {
     this.overlayRef.attach(templatePortal);
   }
 
-  private detatch() {
+  private detatch(): void {
     if (!this.overlayRef) {
       return;
     }

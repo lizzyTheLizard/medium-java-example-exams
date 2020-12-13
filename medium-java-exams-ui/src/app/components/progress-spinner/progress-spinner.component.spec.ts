@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Overlay } from '@angular/cdk/overlay';
 
 import { ProgressSpinnerComponent } from './progress-spinner.component';
@@ -7,7 +7,7 @@ describe('ProgressSpinnerComponent', () => {
   let component: ProgressSpinnerComponent;
   let fixture: ComponentFixture<ProgressSpinnerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [Overlay],
       declarations: [ ProgressSpinnerComponent ]

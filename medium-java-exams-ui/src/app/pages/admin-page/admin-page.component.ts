@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, flatMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { ExamService, Exam, Participant } from '../../services/exam/exam.service';
 import { environment } from 'src/environments/environment';
 
@@ -21,10 +21,10 @@ export class AdminPageComponent implements OnInit {
               private readonly examService: ExamService,
               private readonly snackBar: MatSnackBar) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.pipe(
         map(params => params.id),
-        flatMap(id => this.examService.getExam(id)))
+        mergeMap(id => this.examService.getExam(id)))
       .subscribe(exam => {
         this.exam = exam;
         this.link = environment.uiUrl + this.router.createUrlTree(['/exam/', exam.id]).toString();
