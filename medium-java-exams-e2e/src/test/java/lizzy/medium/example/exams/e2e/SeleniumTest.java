@@ -13,7 +13,6 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -29,12 +28,12 @@ public class SeleniumTest {
     @BeforeAll
     static void beforeTest() {
         FirefoxBinary firefoxBinary = new FirefoxBinary();
-        //firefoxBinary.addCommandLineOptions("--headless");
+        firefoxBinary.addCommandLineOptions("--headless");
         firefoxBinary.addCommandLineOptions("--no-sandbox");
         System.setProperty("webdriver.gecko.driver", "drivers/geckodriver-linux-64bit");
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.setBinary(firefoxBinary);
-        if(ZAP_PROXY_PORT != null) {
+        if(ZAP_PROXY_PORT != null && !ZAP_PROXY_PORT.isEmpty()) {
             firefoxOptions.addPreference("network.proxy.allow_hijacking_localhost", true);
             firefoxOptions.setProxy(new Proxy()
                     .setHttpProxy("localhost:" + ZAP_PROXY_PORT)

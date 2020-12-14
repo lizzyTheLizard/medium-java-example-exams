@@ -24,7 +24,10 @@ public class AdminExamPage {
     AdminExamPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
-        new WebDriverWait(webDriver, 10).until(ExpectedConditions.elementToBeClickable(closeButton));
+        //Make sure spinner is not present any more
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        wait.until(ExpectedConditions.numberOfElementsToBeLessThan(By.className("cdk-overlay-backdrop"), 1));
+        wait.until(ExpectedConditions.elementToBeClickable(closeButton));
     }
 
     public TakeExamPage takeExam() {
